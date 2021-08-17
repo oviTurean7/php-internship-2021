@@ -1,6 +1,10 @@
 <?php
 
+$GLOBALS["dataPath"] = "../data";
+
 require_once '../vendor/autoload.php';
+
+
 
 $request = new App\Core\Request();
 
