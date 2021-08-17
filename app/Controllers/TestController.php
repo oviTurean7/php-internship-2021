@@ -13,7 +13,7 @@ class TestController extends BaseController
 
 //        exit();
 //        echo $GLOBALS["dataPath"] . '/products';
-           $data = require_once $GLOBALS["dataPath"] . "/products.php";
+           $data = require_once dataPath() . "/products.php";
 
 
 
