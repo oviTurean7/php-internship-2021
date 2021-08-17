@@ -1,0 +1,40 @@
+{
+  "name": "bitstone/internship",
+  "description": "Application built while working with php at 2019 internship",
+  "keywords": ["bitstone", "internship"],
+  "authors": [
+    {
+      "name": "Iulia Silasi"
+    },
+    {
+      "name": "Catalin Sbera"
+    },
+    {
+      "name": "Bogdan Oros"
+    },
+    {
+      "name": "Ruben Halmagyi"
+    },
+    {
+      "name": "Alex Arba"
+    },
+    {
+      "name": "Mihnea Mihailescu"
+    }
+  ],
+  "license" : "MIT",
+  "require": {
+    "php": ">=7.0",
+    "jenssegers/blade": "^1.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    },
+    "files": [
+      "helpers.php"
+    ]
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
