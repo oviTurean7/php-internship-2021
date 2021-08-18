@@ -1,5 +1,5 @@
 <footer>
-    <h3>IMPORTANT LINKS</h3>
+    <h3>This is a footer</h3>
     <ul>
         <li>footer first link</li>
         <li>footer second link</li>

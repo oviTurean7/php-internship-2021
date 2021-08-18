@@ -1,7 +1,3 @@
-<?php
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -19,4 +15,3 @@
     @yield('additional-scripts')
     </body>
 </html>
-

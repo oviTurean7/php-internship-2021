@@ -1,5 +1,4 @@
 <?php
-global $config;
 
 $config = require_once 'config.php';
 
@@ -17,7 +16,7 @@ function styleUrl($filename)
 {
     global $config;
 
-    return $config['url'].'/styles/'.$filename.'?v=' . rand();
+    return $config['url'].'/styles/'.$filename;
 }
 
 function scriptUrl($filename)
