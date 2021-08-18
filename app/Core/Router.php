@@ -64,6 +64,7 @@ class Router
             }
 
             //TODO - after presentation 4, throw an Exception here
+
             echo 'Route / is not defined';
             die();
         }
@@ -79,6 +80,7 @@ class Router
         }
 
         //TODO - after presentation 4, throw an Exception here
+
         echo 'Invalid route, or has another http verb';
         die();
     }

@@ -23,11 +23,19 @@ return [
         ],
         [
             'id' => 1,
-            'name' => 'BLuza cu floricele',
+            'name' => 'Bluza cu floricele',
             'units' => 20,
             'price' => 45,
             'description' => 'Bluza draguta',
             'url' => 'http://picture-cdn.wheretoget.it/eodl3y-l-610x610-blouse-floral-flowers-summer-crop+tops-vintage-girly.jpg'
+        ],
+        [
+            'id' => 4,
+            'name' => 'Rochie de vara',
+            'units' => 20,
+            'price' => 120,
+            'description' => 'Rochie de vara cu flori',
+            'url' => 'https://pix.bonprix.pl/imgc/0/0/2/0/2/3/2/9/8/0/_640/20232980/rochie-cu-mesh-floral-roz-floral.jpg'
         ],
     ]
 ];

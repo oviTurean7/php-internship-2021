@@ -1,5 +1,8 @@
 <?php
 
+global $config;
+
+
 $config = require_once 'config.php';
 
 function basePath()
@@ -20,9 +23,21 @@ function appPath()
 function styleUrl($filename)
 {
     global $config;
+//    var_dump($config);
+//    exit();
 
     return $config['url'] . '/styles/' . $filename;
 }
+
+function assetUrl($filename)
+{
+    global $config;
+//    var_dump($config);
+//    exit();
+
+    return $config['url'] . '/assets/' . $filename;
+}
+
 
 function scriptUrl($filename)
 {
@@ -30,3 +45,4 @@ function scriptUrl($filename)
 
     return $config['url'] . '/scripts/' . $filename;
 }
+

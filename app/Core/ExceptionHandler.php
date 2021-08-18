@@ -13,12 +13,12 @@ class ExceptionHandler
     protected function report($e)
     {
         //TODO - log this exception
-        echo "reporting the exception\n";
+        echo $e;
     }
 
     protected function render($e)
     {
         //TODO - return a custom blade for errors
-        echo "rendering the exception\n";
+        //echo $e;
     }
 }
