@@ -9,6 +9,7 @@ $router->get('/test', function($request){
     var_dump($request);
 });
 
-$router->get('/test-controller', 'TestController@test');
+$router->get('/', 'TestController@test');
+$router->get('/add-product', 'TestController@test');
 
 return $router;
