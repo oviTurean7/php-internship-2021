@@ -128,6 +128,7 @@ $("#fileForm").submit(function (event) {
             data: formData,
             success: function(data){
                 console.log("success " + data);
+                $('#submitSuccessMessage').removeClass('d-none');
             },
             error: function (message) {
                 console.log(message);
