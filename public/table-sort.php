@@ -11,6 +11,8 @@ function toggleColumn($columnToSort) {
         $_SESSION['columns'][$columnToSort] = 'asc';
 }
 
+$columnToSort = '';
+
 if (isset($_REQUEST['sort'])) {
     $columnToSort = $_REQUEST['sort'];
     if(isset($_SESSION['columns'])) {
@@ -21,7 +23,8 @@ if (isset($_REQUEST['sort'])) {
         toggleColumn($columnToSort);
     }
 }
-header('Location: '.$config['url'].'/products?column='.$_REQUEST['sort']);
+
+header('Location: '.$config['url'].'/products?column='.$_REQUEST['sort'].'&operation='.$_SESSION['columns'][$columnToSort]);
 
 
 

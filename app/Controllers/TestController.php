@@ -46,10 +46,11 @@ class TestController extends BaseController
     public function showProducts()
     {
         $products = include_once basePath() . '/data/products.php';
-        if(isset($_REQUEST['column'])) {
+
+        if (isset($_REQUEST['column'])) {
             usort($products, function ($p1, $p2) {
                 $directionSort = $_SESSION['columns'][$_REQUEST['column']] == 'asc' ? -1 : 1;
-                if($p1[$_REQUEST['column']] < $p2[$_REQUEST['column']]) return $directionSort;
+                if ($p1[$_REQUEST['column']] < $p2[$_REQUEST['column']]) return $directionSort;
 
                 return -1 * $directionSort;
             });
