@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="{{styleUrl('main.css')}}">
         @yield('additional-css')
     </head>
-    <body>
+    <body class="mainContainer">
     @include('layout.header')
     @yield('content')
     @include('layout.footer')

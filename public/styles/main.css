@@ -1,6 +1,7 @@
 .test {
     background-color: #777;
     text-align: center;
+    font-family: sans-serif, Arial;
 }
 
 .list {
@@ -14,6 +15,7 @@
 
 .product-table {
     width: 90%;
+    font-family: sans-serif, Arial;
 }
 
 .product-table thead {
@@ -41,7 +43,7 @@
 }
 
 .arrowUp {
-    transform: rotate(225deg);
+    transform: translateY(50%) rotate(225deg);
 }
 
 .product-table tbody tr {
@@ -66,4 +68,30 @@
 
 .product-table button:hover {
     cursor: pointer;
+}
+
+.mainContainer {
+    position: relative;
+}
+
+#footer {
+    color: #FFF;
+    font-weight: lighter;
+    font-family: sans-serif, Arial;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    background-color: #999999;
+    padding: 10px;
+    align-items: center;
+}
+
+#footerLinks {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    list-style: none;
+    padding: 0;
 }
