@@ -2,7 +2,7 @@
 
 return [
     [
-        'id' => 3,
+        'id' => 1,
         'name' => 'item 1',
         'units' => 2,
         'price' => 150,
@@ -16,10 +16,24 @@ return [
         'description' => 'Just a cheap product with large stock'
     ],
     [
-        'id' => 1,
+        'id' => 3,
         'name' => 'item 3',
         'units' => 20,
         'price' => 45,
         'description' => 'An average, affordable product'
+    ],
+    [
+        'id' => 4,
+        'name' => 'item 4',
+        'units' => 60,
+        'price' => 25,
+        'description' => 'A new product'
+    ],
+    [
+        'id' => 5,
+        'name' => 'item 5',
+        'units' => 120,
+        'price' => 20,
+        'description' => 'Another product'
     ],
 ];

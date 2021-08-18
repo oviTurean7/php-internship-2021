@@ -2,3 +2,69 @@
     background-color: #777;
     text-align: center;
 }
+
+.list {
+    background-color: red;
+}
+
+.table-container {
+    display: flex;
+    justify-content: center;
+}
+
+.product-table {
+    width: 90%;
+}
+
+.product-table thead {
+    background-color: #999;
+}
+
+.clickableHeader:after {
+    content: ' ';
+    position: relative;
+    left: 2px;
+    border: 8px solid transparent;
+}
+
+.arrow {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    width: 5px;
+    height: 5px;
+    align-self: center;
+    transform: rotate(45deg); /*down*/
+}
+
+.arrow::selection {
+    transform: rotate(225deg);
+
+}
+.up {
+}
+
+.product-table tbody tr {
+    background-color: aliceblue;
+}
+
+.product-table td, th {
+    padding: 10px;
+    text-align: center;
+}
+
+.product-table button {
+    border: none;
+    padding: 5px;
+    width: 100%;
+    background-color: cadetblue;
+}
+
+.product-table button:active {
+    opacity: 50%;
+}
+
+.product-table button:hover {
+    cursor: pointer;
+}

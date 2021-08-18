@@ -7,3 +7,4 @@ $request = new App\Core\Request();
 $app = new App\Core\Application();
 
 $app->handle($request);
+
