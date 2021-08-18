@@ -23,7 +23,9 @@ class CartController extends BaseController
         } else {
             throw new Exception("The id needs to be a number");
         }
-
+        if (isset($_COOKIE['date'])) {
+            var_dump( $_COOKIE['date']);
+        }
 
     }
 

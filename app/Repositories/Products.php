@@ -27,7 +27,17 @@ class Products
     public function getProducts() {
 
         global $products;
+        usort($products, function ($elem1, $elem2) {
 
+            $column = $_SESSION['column'];
+            $direction = $_SESSION['direction'];
+            if ($direction === "asc") {
+                return ($elem1[$column] < $elem2[$column]) ? -1 : 1;
+            }
+            else {
+                return ($elem1[$column] > $elem2[$column]) ? -1 : 1;
+            }
+        });
         return($products);
     }
 

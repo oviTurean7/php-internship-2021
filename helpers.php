@@ -20,6 +20,11 @@ function appPath()
     return __DIR__ . '/app';
 }
 
+function uploadsPath()
+{
+    return __DIR__ . '/public/uploads';
+}
+
 function styleUrl($filename)
 {
     global $config;
