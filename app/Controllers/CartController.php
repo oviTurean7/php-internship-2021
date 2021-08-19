@@ -7,6 +7,7 @@ use App\Repositories\Products;
 use Exception;
 
 
+
 class CartController extends BaseController
 {
 
@@ -34,10 +35,12 @@ class CartController extends BaseController
 
         $productsInCart = [];
         $productsObject = new Products();
-        var_dump( $_SESSION['cart']->getCart());
+        $counter = 0;
         foreach(array_keys($_SESSION['cart']->getCart()) as $id)
         {
-            $productsInCart[] = $productsObject->getProductById($id);
+            $addedProduct = $productsObject->getProductById($id);
+            $addedProduct['quantity'] = $_SESSION['cart']->getCart()[$id];
+            $productsInCart[$counter++] = $addedProduct;
         }
         echo json_encode($productsInCart);
     }
@@ -46,4 +49,5 @@ class CartController extends BaseController
     {
 
     }
+
 }

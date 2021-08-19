@@ -17,7 +17,7 @@ class Cart
     }
 
     public function addToCart($productId) {
-        if (!in_array($productId, $this->addedToCart))
+        if (!in_array($productId, array_keys($this->addedToCart)))
         {
             $this->addedToCart[$productId] = 1;
         }
@@ -30,12 +30,12 @@ class Cart
         return($this->addedToCart);
     }
 
-    public function numberOfItems() {
+    public function getNumberOfItems() {
         $number = 0;
         foreach ($this->addedToCart as $quantity) {
             $number += $quantity;
         }
-        return $quantity;
+        return $number;
     }
 
 

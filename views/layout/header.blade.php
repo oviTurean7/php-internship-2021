@@ -9,6 +9,7 @@
             <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
                 <li class="nav-item"><a class="nav-link" href="#portfolio">Portfolio</a></li>
                 <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" href="list.blade.php"><i class="fas fa-shopping-cart"></i><span id="numberOfProducts"> {{$_SESSION['cart']->getNumberOfItems()}}</span></a></li>
             </ul>
         </div>
     </div>
