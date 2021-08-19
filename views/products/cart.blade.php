@@ -2,25 +2,22 @@
 
 @section('content')
     <div class="pageContainer">
-        <div class="cartIconContainer">
-            <i class="fa fa-shopping-cart" id="cartIcon" onclick="location.href='/cart'"></i>
-        </div>
         <table class="product-table">
             <thead>
             <tr>
-                <th class='clickableHeader' onclick="location.href='table-sort.php?sort=name'">
+                <th>
                     Name
-                    <div class="arrow arrowDown" data-value="name" ></div>
                 </th>
                 <th>
                     Description
                 </th>
-                <th class='clickableHeader' onclick="location.href='table-sort.php?sort=price'">
+                <th>
                     Price
-                    <div class="arrow arrowDown" data-value="price"></div>
                 </th>
                 <th>
-                    Actions
+                    Quantity
+                </th>
+                <th>
                 </th>
             </tr>
             </thead>
@@ -30,8 +27,10 @@
                     <td>{{$product['name']}}</td>
                     <td>{{$product['description']}}</td>
                     <td>{{$product['price']}} RON</td>
+                    <td>{{$product['quantity']}}</td>
                     <td>
-                        <button onclick="addToCart({{json_encode($product)}})">Add to cart</button>
+                        <button onclick="updateQuantity({{json_encode($product), -1}})">-</button>
+                        <button onclick="updateQuantity({{json_encode($product), 1}})">+</button>
                     </td>
                 </tr>
             @endforeach

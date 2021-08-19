@@ -20,3 +20,49 @@ $(document).ready(function () {
         toggleArrow(params.column, params.operation);
     }
 });
+
+function addToCart(product) {
+    console.log('ADD IN CART')
+    product.quantity = 1
+
+    $.ajax({
+        url: '/add-product',
+        type: "POST",
+        data: {product},
+        datatype: "json",
+        success: function (data) {
+            console.log('SUCCESS')
+            console.log(data)
+        }
+    })
+}
+
+function updateQuantity(product, sign) {
+    if(sign > 0) product.quantity++
+    else product.quantity--
+
+    if(product.quantity > 0) {
+        $.ajax({
+            url: '/update-quantity',
+            type: "PUT",
+            data: {product},
+            datatype: "json",
+            success: function (data) {
+                console.log('SUCCESS')
+                console.log(data)
+            }
+        })
+    }
+    else {
+        $.ajax({
+            url: '/remove-cart-product?id='+product.id,
+            type: "DELETE",
+            data: {},
+            datatype: "json",
+            success: function (data) {
+                console.log('SUCCESS')
+                console.log(data)
+            }
+        })
+    }
+}

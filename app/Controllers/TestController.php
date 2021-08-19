@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-session_start();
-
 class TestController extends BaseController
 {
     public function test()
@@ -46,8 +44,9 @@ class TestController extends BaseController
     public function showProducts()
     {
         $products = include_once basePath() . '/data/products.php';
+        session_start();
 
-        if (isset($_REQUEST['column'])) {
+        if (isset($_REQUEST['column']) && isset($_SESSION['columns'])) {
             usort($products, function ($p1, $p2) {
                 $directionSort = $_SESSION['columns'][$_REQUEST['column']] == 'asc' ? -1 : 1;
                 if ($p1[$_REQUEST['column']] < $p2[$_REQUEST['column']]) return $directionSort;
@@ -56,5 +55,53 @@ class TestController extends BaseController
             });
         }
         $this->bladeResponse(array('products' => $products), 'products/table');
+    }
+
+    public function addProduct() {
+
+        if (isset($_POST['product'])) {
+            session_start();
+            $product = $_POST['product'];
+
+            if (isset($_SESSION['cartProducts'])) {
+                if (!in_array($product, $_SESSION['cartProducts']))
+                    array_push($_SESSION['cartProducts'], $product);
+            }
+            else {
+                $_SESSION['cartProducts'] = array();
+                array_push($_SESSION['cartProducts'], $product);
+            }
+
+            echo json_encode($_SESSION['cartProducts']);
+            exit();
+        }
+    }
+
+    public function showCart() {
+        if (isset($_SESSION['cartProducts'])) {
+            $this->bladeResponse($_SESSION['cartProducts'], 'products/cart');
+        }
+    }
+
+    private function updateSessionProduct($product) {
+        session_start();
+
+        for($i = 0; $i < $_SESSION['cartProducts']; $i++) {
+            if($_SESSION['cartProducts'][$i]['id'] === $product['id']) {
+                $_SESSION['cartProducts'][$i] = $product;
+                break;
+            }
+        }
+    }
+
+    public function updateCart() {
+        if (isset($_POST['product'])) {
+            $this->updateSessionProduct($_POST['product']);
+            $this->showCart();
+        }
+    }
+
+    public function removeCartProduct() {
+
     }
 }
