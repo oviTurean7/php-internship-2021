@@ -78,8 +78,10 @@ class TestController extends BaseController
     }
 
     public function showCart() {
+        session_start();
+
         if (isset($_SESSION['cartProducts'])) {
-            $this->bladeResponse($_SESSION['cartProducts'], 'products/cart');
+            $this->bladeResponse(array('products' =>$_SESSION['cartProducts']), 'products/cart');
         }
     }
 
@@ -95,13 +97,25 @@ class TestController extends BaseController
     }
 
     public function updateCart() {
-        if (isset($_POST['product'])) {
+        if (isset($_REQUEST['product'])) {
             $this->updateSessionProduct($_POST['product']);
             $this->showCart();
         }
     }
 
     public function removeCartProduct() {
+        session_start();
 
+        $index = 0;
+        if (isset($_REQUEST['id'])) {
+            for($i = 0; $i < $_SESSION['cartProducts']; $i++) {
+                if($_SESSION['cartProducts'][$i]['id'] === $_REQUEST['id']) {
+                    $index = $i;
+                    break;
+                }
+            }
+            array_splice($_SESSION['cartProducts'], $index, 1);
+            $this->showCart();
+        }
     }
 }

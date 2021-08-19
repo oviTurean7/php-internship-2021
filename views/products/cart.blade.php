@@ -17,8 +17,6 @@
                 <th>
                     Quantity
                 </th>
-                <th>
-                </th>
             </tr>
             </thead>
             <tbody>
@@ -29,8 +27,11 @@
                     <td>{{$product['price']}} RON</td>
                     <td>{{$product['quantity']}}</td>
                     <td>
-                        <button onclick="updateQuantity({{json_encode($product), -1}})">-</button>
-                        <button onclick="updateQuantity({{json_encode($product), 1}})">+</button>
+                        <button onclick="updateQuantity({{json_encode($product)}}, -1)">-</button>
+                        <button onclick="updateQuantity({{json_encode($product)}}, 1)">+</button>
+                    </td>
+                    <td>
+                        <button onclick="removeProductFromCart({{$product['id']}})">remove</button>
                     </td>
                 </tr>
             @endforeach

@@ -48,21 +48,23 @@ function updateQuantity(product, sign) {
             data: {product},
             datatype: "json",
             success: function (data) {
-                console.log('SUCCESS')
-                console.log(data)
+                console.log('SUCCESS +')
             }
         })
     }
     else {
-        $.ajax({
-            url: '/remove-cart-product?id='+product.id,
-            type: "DELETE",
-            data: {},
-            datatype: "json",
-            success: function (data) {
-                console.log('SUCCESS')
-                console.log(data)
-            }
-        })
+        removeProductFromCart(product.id)
     }
+}
+
+function removeProductFromCart(id) {
+    $.ajax({
+        url: '/remove-cart-product?id='+id,
+        type: "DELETE",
+        data: {},
+        datatype: "json",
+        success: function (data) {
+            console.log('SUCCESS -')
+        }
+    })
 }
