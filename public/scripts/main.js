@@ -44,11 +44,12 @@ function updateQuantity(product, sign) {
     if(product.quantity > 0) {
         $.ajax({
             url: '/update-quantity',
-            type: "PUT",
+            type: "POST",
             data: {product},
             datatype: "json",
             success: function (data) {
                 console.log('SUCCESS +')
+                window.location.reload()
             }
         })
     }
@@ -60,11 +61,12 @@ function updateQuantity(product, sign) {
 function removeProductFromCart(id) {
     $.ajax({
         url: '/remove-cart-product?id='+id,
-        type: "DELETE",
+        type: "GET",
         data: {},
         datatype: "json",
         success: function (data) {
             console.log('SUCCESS -')
+            window.location.reload()
         }
     })
 }

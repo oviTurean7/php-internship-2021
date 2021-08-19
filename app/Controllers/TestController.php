@@ -81,23 +81,20 @@ class TestController extends BaseController
         session_start();
 
         if (isset($_SESSION['cartProducts'])) {
-            $this->bladeResponse(array('products' =>$_SESSION['cartProducts']), 'products/cart');
+            $this->bladeResponse(array('products' => $_SESSION['cartProducts']), 'products/cart');
+            header("Refresh:0");
         }
     }
 
     private function updateSessionProduct($product) {
         session_start();
 
-        for($i = 0; $i < $_SESSION['cartProducts']; $i++) {
-            if($_SESSION['cartProducts'][$i]['id'] === $product['id']) {
-                $_SESSION['cartProducts'][$i] = $product;
-                break;
-            }
-        }
+        $index = array_search($product['id'], array_column($_SESSION['cartProducts'], 'id'));
+        $_SESSION['cartProducts'][$index] = $product;
     }
 
     public function updateCart() {
-        if (isset($_REQUEST['product'])) {
+        if (isset($_POST['product'])) {
             $this->updateSessionProduct($_POST['product']);
             $this->showCart();
         }
@@ -106,14 +103,8 @@ class TestController extends BaseController
     public function removeCartProduct() {
         session_start();
 
-        $index = 0;
-        if (isset($_REQUEST['id'])) {
-            for($i = 0; $i < $_SESSION['cartProducts']; $i++) {
-                if($_SESSION['cartProducts'][$i]['id'] === $_REQUEST['id']) {
-                    $index = $i;
-                    break;
-                }
-            }
+        if (isset($_GET['id'])) {
+            $index = array_search($_GET['id'], array_column($_SESSION['cartProducts'], 'id'));
             array_splice($_SESSION['cartProducts'], $index, 1);
             $this->showCart();
         }

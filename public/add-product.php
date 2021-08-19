@@ -4,8 +4,6 @@ session_start();
 $config = require_once '../config.php';
 
 // TODO - work with the $_REQUEST and $_SESSION['cart'] and update accordingly
-echo 'HOLA';
-exit();
 
 if (isset($_REQUEST['id'])) {
     $id = $_REQUEST['id'];
