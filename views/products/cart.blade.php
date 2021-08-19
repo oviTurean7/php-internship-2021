@@ -37,5 +37,18 @@
             @endforeach
             </tbody>
         </table>
+        <form action="/products">
+            <label for="fname">First name:</label>
+            <input type="text" id="fname" name="fname"><br><br>
+            <label for="lname">Last name:</label>
+            <input type="text" id="lname" name="lname"><br><br>
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email"><br><br>
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address"><br><br>
+            <label for="image">Image:</label>
+            <input type="image" id="image" name="image"><br><br>
+            <input type="submit" value="Buy">
+        </form>
     </div>
 @endsection
