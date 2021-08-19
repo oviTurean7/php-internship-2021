@@ -31,8 +31,17 @@ function addToCart(product) {
         data: {product},
         datatype: "json",
         success: function (data) {
-            console.log('SUCCESS')
-            console.log(data)
+            let totalCost = 0
+            let totalQuantity = 0
+            const cartProducts = JSON.parse(data)
+
+            cartProducts.forEach(prod => {
+                totalCost += prod.price * prod.quantity
+                totalQuantity += prod.quantity * 1
+            })
+            $('#prodNum').html(totalQuantity)
+            $('#totalCost').html(totalCost)
+            $('#successCart').show()
         }
     })
 }

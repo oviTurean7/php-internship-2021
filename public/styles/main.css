@@ -32,6 +32,12 @@
     display: flex;
     justify-content: flex-end;
     padding: 10px 0px 10px 0px;
+    align-items: baseline;
+}
+
+#successCart {
+    display: none;
+    padding-right: 10px;
 }
 
 #cartIcon {

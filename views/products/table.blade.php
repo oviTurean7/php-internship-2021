@@ -3,6 +3,7 @@
 @section('content')
     <div class="pageContainer">
         <div class="cartIconContainer">
+            <p id="successCart">Success - Prod. No. <span id="prodNum"></span> Total <span id="totalCost"></span></p>
             <i class="fa fa-shopping-cart" id="cartIcon" onclick="location.href='/cart'"></i>
         </div>
         <table class="product-table">

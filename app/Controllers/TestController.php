@@ -82,7 +82,6 @@ class TestController extends BaseController
 
         if (isset($_SESSION['cartProducts'])) {
             $this->bladeResponse(array('products' => $_SESSION['cartProducts']), 'products/cart');
-            header("Refresh:0");
         }
     }
 
