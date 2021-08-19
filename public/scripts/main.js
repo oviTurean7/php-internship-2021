@@ -19,6 +19,10 @@ $(document).ready(function () {
     if (params.column && params.operation) {
         toggleArrow(params.column, params.operation);
     }
+
+    $('form').on('submit', function(e) {
+        e.preventDefault()
+    })
 });
 
 function addToCart(product) {
@@ -79,3 +83,10 @@ function removeProductFromCart(id) {
         }
     })
 }
+
+function validateBuyer() {
+    console.log('HEY')
+    return true
+}
+
+

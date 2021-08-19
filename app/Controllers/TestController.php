@@ -108,4 +108,15 @@ class TestController extends BaseController
             $this->showCart();
         }
     }
+
+    public function validateBuyer() {
+        echo 'HOLA BUYER';
+        exit();
+        $details = ['fname', 'lname', 'email', 'address', 'image'];
+        foreach ($details as $detail) {
+            if (!isset($_POST[$detail])) {
+
+            }
+        }
+    }
 }

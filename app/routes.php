@@ -14,5 +14,6 @@ $router->post('/add-product', 'TestController@addProduct');
 $router->get('/cart', 'TestController@showCart');
 $router->post('/update-quantity', 'TestController@updateCart');
 $router->get('/remove-cart-product', 'TestController@removeCartProduct');
+$router->post('/submit-buyer-info', 'TestController@validateBuyer');
 
 return $router;
