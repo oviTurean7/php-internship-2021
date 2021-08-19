@@ -23,7 +23,7 @@ class TestController extends BaseController
         //var_dump($data);
 
 
-        $this->bladeResponse($data1, 'products/list');
+        $this->bladeResponse($data1, ['products/list', 'products/cart']);
 //        $this->jsonResponse($data);
 //        $this->response($data, 'products/list');
     }

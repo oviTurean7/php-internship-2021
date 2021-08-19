@@ -87,6 +87,7 @@ class Router
 
     protected function checkRouteMatch($path, $method, $route)
     {
+
         if ($method !== $route['method']) {
             return false;
         }
@@ -96,7 +97,7 @@ class Router
         $comparingRouteParts = explode('/', $targetRoute);
 
         if (count($routeParts) !== count($comparingRouteParts)) {
-            return false;
+        return false;
         }
 
         for ($index = 0; $index < count($routeParts); $index++) {
@@ -105,7 +106,6 @@ class Router
 
             $openBrace = strpos($comparingRoutePart, '{');
             $closeBrace = strpos($comparingRoutePart, '}');
-
             if ($openBrace !== false && $closeBrace !== false && $openBrace < $closeBrace) {
                 //if the compared route contains {something} this matches anything
                 //TODO - here we should fill the parameters for the controller after oop course 5

@@ -52,6 +52,7 @@ class Application
             $this->filterRoute($route);
         }
 
+
         if (is_callable($action)) {
             return call_user_func($action, ...$parameters);
         } elseif(is_string($action) && strpos($action, '@') !== false) {

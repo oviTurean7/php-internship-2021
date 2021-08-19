@@ -16,5 +16,6 @@ $router->get('/cart', 'CartController@get');
 $router->post('/product/sort/column', 'ProductController@sortColumn');
 $router->post('/product/sort/direction', 'ProductController@sortDirection');
 $router->post('/file', 'FileController@add');
-
+$router->put('/cart/{id}', 'CartController@update');
+$router->delete('/cart/{id}', 'CartController@delete');
 return $router;

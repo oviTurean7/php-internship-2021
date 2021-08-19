@@ -11,7 +11,7 @@ class BaseController
 
     public function __construct()
     {
-        $this->bladeRenderer = new Blade(basePath().'/views', appPath().'/cache');
+        $this->bladeRenderer = new Blade(basePath() . '/views', appPath() . '/cache');
     }
 
     public function response($data, $viewPath = null)
@@ -36,7 +36,15 @@ class BaseController
 
     public function bladeResponse($data, $viewPath)
     {
-        echo $this->bladeRenderer->render($viewPath, $data);
+
+        if (is_array($viewPath)) {
+
+            foreach ($viewPath as $view) {
+                echo $this->bladeRenderer->render($view, $data);
+            }
+        } else {
+            echo $this->bladeRenderer->render($viewPath, $data);
+        }
         exit;
     }
 

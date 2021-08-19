@@ -27,7 +27,9 @@ class CartController extends BaseController
         if (isset($_COOKIE['date'])) {
             var_dump( $_COOKIE['date']);
         }
-
+        $final = ['items' => $_SESSION['cart']->getNumberOfItems(), "price" => $_SESSION['cart']->getTotalPrice()];
+        //var_dump($_SESSION['cart']->getTotalPrice());
+        echo json_encode($final);
     }
 
     public function get()
@@ -45,9 +47,17 @@ class CartController extends BaseController
         echo json_encode($productsInCart);
     }
 
-    public function numberOfItems()
+    public function update($id)
+    {
+        parse_str(file_get_contents("php://input"), $_PUT);
+
+        $_SESSION['cart']->update($id, intval($_PUT['add']));
+    }
+
+    public function delete($id)
     {
 
+        $_SESSION['cart']->delete($id);
     }
 
 }

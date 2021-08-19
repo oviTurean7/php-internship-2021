@@ -5473,8 +5473,8 @@ textarea.form-control-lg {
 
 .modal {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 25vh;
+  left: 25vw;
   z-index: 1055;
   display: none;
   width: 100%;
@@ -11447,7 +11447,7 @@ header.masthead .masthead-heading {
   position: relative;
   display: flex;
   margin: 0 auto;
-  justify-content: center;
+ justify-content: center;
   background-color: white;
 }
 #portfolio .portfolio-item .portfolio-link .portfolio-hover {
@@ -11486,7 +11486,7 @@ header.masthead .masthead-heading {
 
 .portfolio-modal .modal-dialog {
   margin: 1rem;
-  max-width: 100vw;
+  max-width: 50vw;
 }
 .portfolio-modal .modal-content {
   padding-top: 6rem;
@@ -11512,6 +11512,8 @@ header.masthead .masthead-heading {
   margin-bottom: 2rem;
 }
 .portfolio-modal .close-modal {
+  display: flex;
+
   position: absolute;
   top: 1.5rem;
   right: 1.5rem;
@@ -11777,4 +11779,24 @@ section#contact form#contactForm :-ms-input-placeholder {
 .sorting-options {
   font-size: 25px;
   margin: 35px 0px;
+}
+.less, .more, .quantity {
+  display: inline;
+  margin: 5px;
+
+}
+
+.quantity {
+
+  text-align: center;
+}
+
+.trash {
+  border: none;
+  font-size: 20px;
+  padding: 15px;
+}
+
+.cartItem {
+  justify-content: flex-end;
 }
