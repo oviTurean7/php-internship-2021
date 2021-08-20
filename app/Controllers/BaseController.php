@@ -11,7 +11,7 @@ class BaseController
 
     public function __construct()
     {
-        $this->bladeRenderer = new Blade(basePath().'/views', appPath().'/cache');
+        $this->bladeRenderer = new Blade(basePath() . '/views', appPath() . '/cache');
     }
 
     public function response($data, $viewPath = null)
@@ -44,4 +44,5 @@ class BaseController
     {
         $this->request = $request;
     }
+
 }
