@@ -2,14 +2,28 @@
 
 $config = require_once '../../config.php';
 
-$conn = new mysqli($config['database']['server'], $config['database']['user'], $config['database']['password'], $config['database']['name']);
-
-if($conn->connect_error) {
-    die('Connection failed:' . $conn->connect_error);
+function newConnection($config) {
+    $conn = new mysqli($config['database']['server'], $config['database']['user'], $config['database']['password'], $config['database']['name']);
+    return $conn;
 }
-echo 'Connected succesfully';
 
-$sql = "INSERT INTO users(first_name, last_name, email, address, phone) VALUES ('Alex', 'Zgimbau', 'alexz@gmail.com', 'Andrei Muresanu nr 4', '0742097257');";
-$sql .= "INSERT INTO users(first_name, last_name, email, address, phone) VALUES ('Dani', 'Zavatzki', 'daniz@gmail.com', 'Calea Turzii nr 36', '0742097942');";
+$conn = newConnection($config);
+
+$sql = "INSERT INTO users (first_name, last_name, email, address, phone) VALUES ('Alex', 'Zgimbau', 'alexz@gmail.com', 'Andrei Muresanu nr 4', '0742097257');";
+$sql .= "INSERT INTO users (first_name, last_name, email, address, phone) VALUES ('Dani', 'Zavatzki', 'daniz@gmail.com', 'Calea Turzii nr 36', '0742097942');";
 
 $conn->multi_query($sql);
+
+$conn = newConnection($config);
+
+$sql = "SELECT * FROM `users`";
+$result = $conn->query($sql);
+
+if($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        echo $row['id'] . " " . $row['first_name'] . " " . $row['last_name'] . "<br>";
+    }
+} else {
+    echo '0 results';
+}
+

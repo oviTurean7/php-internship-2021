@@ -119,4 +119,15 @@ class TestController extends BaseController
             }
         }
     }
+
+    public function testDB() {
+        $this->bladeResponse([],'dbTest/testDB');
+    }
+
+    public function showUsers() {
+        if (isset($_REQUEST['type'])) echo $_REQUEST['type'];
+        echo 'HOLA';
+        $rows = include_once basePath() . '/public/database/pdo.php';
+        print_r($rows);
+    }
 }

@@ -15,5 +15,7 @@ $router->get('/cart', 'TestController@showCart');
 $router->post('/update-quantity', 'TestController@updateCart');
 $router->get('/remove-cart-product', 'TestController@removeCartProduct');
 $router->post('/submit-buyer-info', 'TestController@validateBuyer');
+$router->get('/testDB', 'TestController@testDB');
+$router->get('/show-users', 'TestController@showUsers');
 
 return $router;
