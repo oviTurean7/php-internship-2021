@@ -37,18 +37,28 @@
             @endforeach
             </tbody>
         </table>
-        <form action="/submit-buyer-info" method="post" onsubmit="return validateBuyer()">
-        <label for="fname">First name:</label>
-            <input type="text" id="fname" name="fname"><br><br>
-            <label for="lname">Last name:</label>
-            <input type="text" id="lname" name="lname"><br><br>
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="email"><br><br>
-            <label for="address">Address:</label>
-            <input type="text" id="address" name="address"><br><br>
-            <label for="image">Image:</label>
-            <input type="image" id="image" name="image"><br><br>
-            <input type="submit" value="Buy">
+        <form class="form" action="/submit-buyer-info" method="post">
+            <div class="form-item">
+                <label for="fname">First name: </label>
+                <input type="text" id="fname" name="fname"><br><br>
+            </div>
+            <div class="form-item">
+                <label for="lname">Last name: </label>
+                <input type="text" id="lname" name="lname"><br><br>
+            </div>
+            <div class="form-item">
+                <label for="email">Email: </label>
+                <input type="text" id="email" name="email"><br><br>
+            </div>
+            <div class="form-item">
+                <label for="address">Address: </label>
+                <input type="text" id="address" name="address"><br><br>
+            </div>
+            <div class="form-item" id="image-input">
+                <label for="imageForm">Image: </label>
+                <input type="file" accept="image/jpeg" name="image"><br><br>
+            </div>
+            <input id="form-button" type="submit" value="Buy">
         </form>
     </div>
 @endsection

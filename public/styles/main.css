@@ -108,6 +108,48 @@ html {
     cursor: pointer;
 }
 
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    background-color: aliceblue;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.form-item {
+    display: flex;
+    padding-bottom: 10px;
+    align-items: center;
+    justify-content: space-around;
+}
+
+form input {
+    border: 1px solid #999;
+}
+
+form input:focus {
+    outline: none;
+}
+
+.form-input {
+    background-color: red;
+}
+
+#image-input {
+    width: 75%;
+}
+
+#form-button {
+    width: 80%;
+    align-self: center;
+    border-radius: 5px;
+    border: none;
+    background-color: cadetblue;
+    padding: 5px;
+    cursor: pointer;
+}
+
 #footer {
     color: #FFF;
     font-weight: lighter;

@@ -1,11 +1,10 @@
 console.log('loading this script');
 
 const toggleArrow = (dataValue, op) => {
-    if(op == 'asc') {
+    if (op == 'asc') {
         $(`.arrow[data-value=${dataValue}]`).removeClass('arrowDown');
         $(`.arrow[data-value=${dataValue}]`).addClass('arrowUp');
-    }
-    else {
+    } else {
         $(`.arrow[data-value=${dataValue}]`).removeClass('arrowUp');
         $(`.arrow[data-value=${dataValue}]`).addClass('arrowDown');
     }
@@ -20,8 +19,23 @@ $(document).ready(function () {
         toggleArrow(params.column, params.operation);
     }
 
-    $('form').on('submit', function(e) {
-        e.preventDefault()
+    $('form').on('submit', function (e) {
+        const elemIDs = ['#fname', '#lname', '#email', '#address']
+        let isValid = 0
+        elemIDs.forEach(id => {
+            console.log($(id))
+            if ($(id).val().length > 0) {
+                $(id).removeClass('form-input')
+                isValid++
+            }
+            else $(id).addClass('form-input')
+        })
+
+        console.log(isValid)
+        if (isValid !== elemIDs.length) {
+            e.preventDefault();
+            alert('NOT VALID FORM');
+        }
     })
 });
 
@@ -51,10 +65,10 @@ function addToCart(product) {
 }
 
 function updateQuantity(product, sign) {
-    if(sign > 0) product.quantity++
+    if (sign > 0) product.quantity++
     else product.quantity--
 
-    if(product.quantity > 0) {
+    if (product.quantity > 0) {
         $.ajax({
             url: '/update-quantity',
             type: "POST",
@@ -65,15 +79,14 @@ function updateQuantity(product, sign) {
                 window.location.reload()
             }
         })
-    }
-    else {
+    } else {
         removeProductFromCart(product.id)
     }
 }
 
 function removeProductFromCart(id) {
     $.ajax({
-        url: '/remove-cart-product?id='+id,
+        url: '/remove-cart-product?id=' + id,
         type: "GET",
         data: {},
         datatype: "json",
@@ -82,11 +95,6 @@ function removeProductFromCart(id) {
             window.location.reload()
         }
     })
-}
-
-function validateBuyer() {
-    console.log('HEY')
-    return true
 }
 
 
