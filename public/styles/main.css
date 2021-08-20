@@ -154,7 +154,7 @@ form input:focus {
     color: #FFF;
     font-weight: lighter;
     font-family: sans-serif, Arial;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
