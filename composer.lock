@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ba0a55e2626c7b642fa19af22fb14d4",
+    "content-hash": "ba17c5e61e54faf8f07ea77fd2b4f3c2",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -639,6 +639,28 @@
                 "source": "https://github.com/laravel/framework"
             },
             "time": "2021-08-03T13:42:24+00:00"
+        },
+        {
+            "name": "intelogie/cryptojs",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/INTELOGIE/CryptoJS.git",
+                "reference": "8f7f9b365c95031344df56754c24e0d004a0ee86"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/INTELOGIE/CryptoJS/zipball/8f7f9b365c95031344df56754c24e0d004a0ee86",
+                "reference": "8f7f9b365c95031344df56754c24e0d004a0ee86",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "support": {
+                "source": "https://github.com/INTELOGIE/CryptoJS/tree/master"
+            },
+            "time": "2016-08-10T20:34:09+00:00"
         },
         {
             "name": "jenssegers/blade",
@@ -1438,11 +1460,15 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "intelogie/cryptojs": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.0"
+        "php": ">=7.4",
+        "ext-json": "*",
+        "ext-mysqli": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.1.0"

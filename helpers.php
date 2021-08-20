@@ -25,6 +25,11 @@ function uploadsPath()
     return __DIR__ . '/public/uploads';
 }
 
+function databasePath()
+{
+    return __DIR__ . '/public/database';
+}
+
 function styleUrl($filename)
 {
     global $config;

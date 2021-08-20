@@ -30,6 +30,22 @@ if (empty($_SESSION['cart'])) {
 }
 unset($_COOKIE['date']);
 
+global $conn;
+$db = (include basePath() . "\config.php")['database'];
+
+
+$conn =  new mysqli($db['server'], $db['username'], $db['password'], $db['name']
+);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+
+//include_once databasePath() . "/mysqli-procedural.php";
+//include_once databasePath() . "/mysqli-oop.php";
+//include_once databasePath() . "/pdo.php";
+
 $app->handle($request);
 
 

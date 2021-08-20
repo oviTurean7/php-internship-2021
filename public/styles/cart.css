@@ -1,0 +1,47 @@
+#upload {
+    visibility: hidden;
+}
+
+#upload-label {
+    position: absolute;
+    top: 100%;
+    left: 1rem;
+    transform: translateY(-50%);
+}
+
+.input-group {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+    padding: 0px 40px;
+}
+
+.image-area {
+    border: 2px dashed rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+    position: relative;
+}
+
+.image-area::before {
+    color: rgba(0, 0, 0, 0.3);
+    font-weight: bold;
+    text-transform: uppercase;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.8rem;
+    z-index: 1;
+}
+
+.image-area::after {
+    content: '';
+}
+
+.image-area #image {
+    z-index: 2;
+    position: relative;
+    display: none;
+}

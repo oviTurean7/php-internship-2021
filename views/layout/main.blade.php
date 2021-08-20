@@ -15,19 +15,18 @@
     <!-- Google fonts-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css"/>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css"/>
+    <!-- Latest compiled and minified CSS -->
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+
+
     <!-- Core theme CSS (includes Bootstrap)-->
     @yield('additional-css')
 </head>
 <body>
-
-    <?php if(false) { ?>
-        @yield('cart') <?php }
-    else { ?>
-        @yield('content')
-    <?php }?>
-
-
-
+@yield('content')
 <script src="{{scriptUrl('jquery-3.4.1.js')}}"></script>
 <script src="{{scriptUrl('main.js')}}"></script>
 @yield('additional-scripts')

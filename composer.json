@@ -26,7 +26,9 @@
   "require": {
     "php": ">=7.4",
     "jenssegers/blade": "^1.2",
-    "ext-json": "*"
+    "ext-json": "*",
+    "ext-mysqli": "*",
+    "intelogie/cryptojs": "dev-master"
   },
   "autoload": {
     "psr-4": {

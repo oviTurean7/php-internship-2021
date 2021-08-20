@@ -39,6 +39,10 @@ class Cart
 
     }
 
+    public function empty() {
+        $this->addedToCart = [];
+    }
+
     public function getCart() {
 
 

@@ -7,7 +7,6 @@ use App\Repositories\Products;
 use Exception;
 
 
-
 class CartController extends BaseController
 {
 
@@ -25,7 +24,7 @@ class CartController extends BaseController
             throw new Exception("The id needs to be a number");
         }
         if (isset($_COOKIE['date'])) {
-            var_dump( $_COOKIE['date']);
+            var_dump($_COOKIE['date']);
         }
         $final = ['items' => $_SESSION['cart']->getNumberOfItems(), "price" => $_SESSION['cart']->getTotalPrice()];
         //var_dump($_SESSION['cart']->getTotalPrice());
@@ -38,8 +37,7 @@ class CartController extends BaseController
         $productsInCart = [];
         $productsObject = new Products();
         $counter = 0;
-        foreach(array_keys($_SESSION['cart']->getCart()) as $id)
-        {
+        foreach (array_keys($_SESSION['cart']->getCart()) as $id) {
             $addedProduct = $productsObject->getProductById($id);
             $addedProduct['quantity'] = $_SESSION['cart']->getCart()[$id];
             $productsInCart[$counter++] = $addedProduct;
@@ -58,6 +56,19 @@ class CartController extends BaseController
     {
 
         $_SESSION['cart']->delete($id);
+    }
+
+    public function empty()
+    {
+
+        $_SESSION['cart']->empty();
+        var_dump($_SESSION['cart']);
+    }
+
+    public function view()
+    {
+        $this->bladeResponse(array('Ioana' => 1), 'products/cart');
+
     }
 
 }

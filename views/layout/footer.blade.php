@@ -1,5 +1,8 @@
-<section class="page-section" id="contact">
-    <div class="container">
+
+
+
+<section class="page-section contact background">
+    <div class="container ">
         <div class="text-center">
             <h2 class="section-heading text-uppercase">Submit file</h2>
             <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
@@ -48,8 +51,7 @@
             <div class="row align-items-stretch mb-5">
                 <div class="form-group">
 
-                    <input class="form-control" id="file" type="file" placeholder="Your Name *" data-sb-validations="required" />
-                    <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
+                    <input class="form-control" id="file" type="file" placeholder="Your Name *" data-sb-validations="required" required/>
                 </div>
             </div>
             <div class="d-none" id="submitSuccessMessage">
@@ -64,7 +66,7 @@
             <!-- an error submitting the form-->
             <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
             <!-- Submit Button-->
-            <div class="text-center"><button class="btn btn-primary btn-xl text-uppercase " id="submitButton" type="submit">Submit file</button></div>
+            <div class="text-center"><button class="btn btn-primary btn-xl text-uppercase " id="submitFileButton" type="submit">Submit file</button></div>
         </form>
     </div>
 </section>
