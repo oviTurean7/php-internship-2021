@@ -15,7 +15,6 @@ class AccountController extends BaseController
         global $configDB;
 
         $conn = new \mysqli($configDB['database']['server'], $configDB['database']['user'], $configDB['database']['password'], $configDB['database']['name']);
-        var_dump($configDB);
         if (!$conn) {
             die('Connection failed:' . $conn->connect_error);
         }
@@ -32,16 +31,14 @@ class AccountController extends BaseController
 
             $query = "SELECT `email`, `password` from `users` WHERE strcmp(`email`,'$email') = 0";
             $result = $conn->query($query);
-            $rows = [];
+
             if ($result->num_rows > 0) {
-                while($row = $result->fetch_assoc()) {
-                    $rows[] = $row;
-                }
-                $hashPass = md5($rows[0]['password']);
+                $row = $result->fetch_assoc();
+                $hashPass = md5($row['password']);
 
                 if (strcmp(md5($password), $hashPass) === 0) {
                     session_start();
-                    $_SESSION['user'] = array("email" => $rows[0]['email'], "password" => $hashPass);
+                    $_SESSION['user'] = array("email" => $row['email'], "password" => $hashPass);
                     header('Location: '.$config['url'].'/home');
                 }
             }
@@ -74,6 +71,18 @@ class AccountController extends BaseController
             $conn = $this->setConnection();
             $query = "INSERT INTO `users`(email, password, first_name, last_name, address) VALUES('$email', '$password', '$fname', '$lname', '$address')";
             $result = $conn->query($query);
+            if ($result) {
+                $conn = $this->setConnection();
+                $query = "SELECT `id` from `users` WHERE strcmp(`email`,'$email') = 0";
+                $queryResult = $conn->query($query);
+                $row = $queryResult->fetch_assoc();
+
+                $userID = $row['id'];
+                $token = md5(uniqid($row['id'], true));
+                $conn = $this->setConnection();
+                $setToken = "UPDATE `users` set `token`='$token' WHERE `id` = $userID";
+                $conn->query($setToken);
+            }
         }
     }
 
