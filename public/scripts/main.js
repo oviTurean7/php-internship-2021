@@ -1,5 +1,21 @@
 
+$(document).ready(function () {
+    if (localStorage.getItem('logging') !== null) {
+        $('#logging').text(localStorage.getItem('logging'));
+    }
+    //
+});
 
+$('#logging').click(function () {
+    if (localStorage.getItem('logging') !== null) {
+        localStorage.removeItem('logging');
+        window.location.reload();
+    }
+    else {
+
+        window.location.replace("http://php.local/login");
+    }
+});
 
 $(".cart-button").submit(function (event) {
     console.log("alabala");

@@ -14,12 +14,16 @@ $(document).ready (function () {
                email: em,
                password: pw
            },
-           datatype: "json",
            success: function(data) {
                console.log(data);
+               console.log('alabala');
+               localStorage.setItem('logging', 'Log out');
+               window.location.replace('http://php.local');
            },
            error: function(error) {
                console.log(error.responseText);
+               $('#submitError').children(0).text(error.responseText);
+               $('#submitError').removeClass("d-none");
            }
        })
     });

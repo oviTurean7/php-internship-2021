@@ -22,4 +22,7 @@ $router->delete('/cart/{id}', 'CartController@delete');
 $router->delete('/cart', 'CartController@empty');
 $router->get('/login', 'LoginController@view');
 $router->post('/login', 'LoginController@login');
+$router->get('/signup', 'SignupController@view');
+$router->post('/signup', 'SignupController@signup');
+$router->get('/confirm?token={test}', 'ConfirmController@confirm');
 return $router;

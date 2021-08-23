@@ -8,9 +8,10 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="http://php.local/login">Log in</a></li>
+                    <li class="nav-item"><a class="nav-link" href="http://php.local/signup" id="signup">Sign up</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" id="logging">Log in</a></li>
                     <li class="nav-item"><a class="nav-link" href="http://php.local/">Portfolio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <!--<li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>-->
                     <li class="nav-item" id="cart"><a class="nav-link" href="http://php.local/cart"><i class="fas fa-shopping-cart"></i><span id="numberOfProducts"> {{$_SESSION['cart']->getNumberOfItems()}}</span></a></li>
                 </ul>
             </div>

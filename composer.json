@@ -28,7 +28,8 @@
     "jenssegers/blade": "^1.2",
     "ext-json": "*",
     "ext-mysqli": "*",
-    "intelogie/cryptojs": "dev-master"
+    "intelogie/cryptojs": "dev-master",
+    "swiftmailer/swiftmailer": "6.0"
   },
   "autoload": {
     "psr-4": {
