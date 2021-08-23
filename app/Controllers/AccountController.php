@@ -1,9 +1,13 @@
 <?php
 
 namespace App\Controllers;
+const PASSWORD = 'mail_password';
+
+
 
 global $configDB;
 $configDB = require_once basePath() . '/configDB.php';
+require_once basePath() . '/vendor/autoload.php';
 
 class AccountController extends BaseController
 {
@@ -21,15 +25,22 @@ class AccountController extends BaseController
         return $conn;
     }
 
-    public function checkLoginData() {
+    private function login($email, $hashPass, $token, $confirmed = 0) {
         global $config;
+        if($confirmed == 1) {
+            session_start();
+            $_SESSION['user'] = array("email" => $email, "password" => $hashPass, "token" => $token);
+            header('Location: ' . $config['url'] . '/home');
+        }
+    }
 
+    public function checkLoginData() {
         if (isset($_REQUEST['email'])) {
             $conn = $this->setConnection();
             $email = $_REQUEST['email'];
             $password = $_REQUEST['password'];
 
-            $query = "SELECT `email`, `password` from `users` WHERE strcmp(`email`,'$email') = 0";
+            $query = "SELECT `email`, `password`, `confirmed`, `token` from `users` WHERE strcmp(`email`,'$email') = 0";
             $result = $conn->query($query);
 
             if ($result->num_rows > 0) {
@@ -37,9 +48,7 @@ class AccountController extends BaseController
                 $hashPass = md5($row['password']);
 
                 if (strcmp(md5($password), $hashPass) === 0) {
-                    session_start();
-                    $_SESSION['user'] = array("email" => $row['email'], "password" => $hashPass);
-                    header('Location: '.$config['url'].'/home');
+                    $this->login($row['email'], $hashPass, $row['token']);
                 }
             }
             else {
@@ -62,6 +71,26 @@ class AccountController extends BaseController
         $this->bladeResponse([], '/account/register');
     }
 
+    private function sendEmail($email, $token) {
+        $transport = (new \Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl'))
+            ->setUsername('robert3paul')
+            ->setPassword(PASSWORD);
+
+        $mailer = new \Swift_Mailer($transport);
+// Create a message
+        $message = (new \Swift_Message('First email'))
+            ->setFrom(['robert3paul@gmail.com' => 'Robert Gherghel'])
+            ->setTo(['robert.gherghel@bitstone.eu'])
+            ->setBody("Confirmation link: http://internship.local/confirm?token=$token");
+// Send the message
+        try {
+            $result = $mailer->send($message);
+        }
+        catch (\Exception $exception) {
+            var_dump($exception->getMessage());
+        }
+    }
+
     private function register($email, $password, $fname, $lname, $address) {
         $conn = $this->setConnection();
         $query = "SELECT `email`, `password` from `users` WHERE strcmp(`email`,'$email') = 0";
@@ -82,6 +111,8 @@ class AccountController extends BaseController
                 $conn = $this->setConnection();
                 $setToken = "UPDATE `users` set `token`='$token' WHERE `id` = $userID";
                 $conn->query($setToken);
+
+                $this->sendEmail($email, $token);
             }
         }
     }
@@ -92,5 +123,21 @@ class AccountController extends BaseController
         }
     }
 
+    public function confirmMail() {
+        if (isset($_REQUEST['token'])) {
+            $token = $_REQUEST['token'];
+            $conn = $this->setConnection();
+            $query = "SELECT * from `users` WHERE strcmp(`token`,'$token') = 0";
+            $queryResult = $conn->query($query);
+            if ($queryResult->num_rows > 0) {
+                $result = $queryResult->fetch_assoc();
+                $userID = $result['id'];
+                $conn = $this->setConnection();
+                $setConfirmed = "UPDATE `users` set `confirmed`=1 WHERE `id` = $userID";
+                $conn->query($setConfirmed);
 
+                $this->login($result['email'], $result['password'], $result['token'], 1);
+            }
+        }
+    }
 }

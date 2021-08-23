@@ -25,7 +25,8 @@
   "license" : "MIT",
   "require": {
     "php": ">=7.0",
-    "jenssegers/blade": "^1.2"
+    "jenssegers/blade": "^1.2",
+    "swiftmailer/swiftmailer": "^6.2"
   },
   "autoload": {
     "psr-4": {

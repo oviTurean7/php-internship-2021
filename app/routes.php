@@ -22,5 +22,6 @@ $router->get('/validate-login', 'AccountController@checkLoginData');
 $router->get('/home', 'AccountController@showHome');
 $router->get('/register-form', 'AccountController@showRegister');
 $router->get('/register', 'AccountController@checkRegisterData');
+$router->get('/confirm', 'AccountController@confirmMail');
 
 return $router;
