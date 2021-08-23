@@ -17,5 +17,10 @@ $router->get('/remove-cart-product', 'TestController@removeCartProduct');
 $router->post('/submit-buyer-info', 'TestController@validateBuyer');
 $router->get('/testDB', 'TestController@testDB');
 $router->get('/show-users', 'TestController@showUsers');
+$router->get('/login', 'AccountController@showLoginForm');
+$router->get('/validate-login', 'AccountController@checkLoginData');
+$router->get('/home', 'AccountController@showHome');
+$router->get('/register-form', 'AccountController@showRegister');
+$router->get('/register', 'AccountController@checkRegisterData');
 
 return $router;

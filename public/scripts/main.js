@@ -19,7 +19,7 @@ $(document).ready(function () {
         toggleArrow(params.column, params.operation);
     }
 
-    $('form').on('submit', function (e) {
+    $('.cart-form').on('submit', function (e) {
         const elemIDs = ['#fname', '#lname', '#email', '#address']
         let isValid = 0
         elemIDs.forEach(id => {

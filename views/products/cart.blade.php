@@ -37,7 +37,7 @@
             @endforeach
             </tbody>
         </table>
-        <form class="form" action="/submit-buyer-info" method="post">
+        <form class="cart-form" action="/submit-buyer-info" method="post">
             <div class="form-item">
                 <label for="fname">First name: </label>
                 <input type="text" id="fname" name="fname"><br><br>
