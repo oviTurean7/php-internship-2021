@@ -1,9 +1,13 @@
 
 $(document).ready(function () {
     if (localStorage.getItem('logging') !== null) {
+        $('#signup').hide();
         $('#logging').text(localStorage.getItem('logging'));
     }
-    //
+    else {
+        $('#signup').show();
+    }
+
 });
 
 $('#logging').click(function () {

@@ -2,12 +2,33 @@
 
 namespace App\Repositories;
 global $products;
-$products = (include_once dataPath() . "/products.php")['products'];
+global $conn;
+$sql = "SELECT * FROM `products`";
+$result = $conn->query($sql);
+
+$products = $result->fetch_all(MYSQLI_ASSOC);
+//var_dump($products);
 
 class Products
 {
 
+    static public function addProductsToDatabase () {
+        global $conn;
+        global $products;
+        foreach($products as $product) {
+            //var_dump($product);
+            $stmt = $conn->prepare("INSERT  INTO products(name, units, price, description, url) VALUES (?, ?, ?, ?, ?)");
 
+            $stmt->bind_param("sidss", $name, $units, $price, $description, $url);
+            $name = $product['name'];
+            $units = $product['units'];
+            $price =  $product['price'];
+            $description =  $product['description'];
+            $url = $product['url'];
+            $stmt->execute();
+            $stmt->close();
+        }
+    }
 
     public function getProductById($productId) {
 
@@ -16,7 +37,7 @@ class Products
         global $products;
         foreach($products as $product) {
             //var_dump($product);
-            if($product['id'] === $productId) {
+            if($product['id'] == $productId) {
                 return $product;
             }
         }

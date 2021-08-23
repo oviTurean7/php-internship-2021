@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Repositories\Products;
+
 class ProductController extends BaseController
 {
     public function sortColumn() {
@@ -10,6 +12,10 @@ class ProductController extends BaseController
             var_dump( $_COOKIE['date']);
         }
         //echo $_POST['column'];
+    }
+
+    public function addProducts() {
+        Products::addProductsToDatabase();
     }
 
     public function sortDirection() {

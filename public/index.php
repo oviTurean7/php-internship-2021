@@ -22,7 +22,7 @@ $_COOKIE['date'] = new DateTime();
 //
 //    //echo "here        hgry   ";
 //}
-
+//session_destroy();
 if (empty($_SESSION['cart'])) {
     $_SESSION['cart'] = new Cart();
     $_SESSION['column'] = "name";

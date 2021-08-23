@@ -17,6 +17,7 @@ class Cart
     }
 
     public function addToCart($productId) {
+
         if (!in_array($productId, array_keys($this->addedToCart)))
         {
             $this->addedToCart[$productId] = 1;
@@ -24,7 +25,7 @@ class Cart
         else {
             $this->addedToCart[$productId] += 1;
         }
-
+        var_dump($this->addedToCart);
     }
 
     public function update($productId, $quantity) {
@@ -43,9 +44,8 @@ class Cart
         $this->addedToCart = [];
     }
 
-    public function getCart() {
-
-
+    public function getCart(): array
+    {
         return($this->addedToCart);
     }
 
@@ -53,10 +53,12 @@ class Cart
 
         $productsObject = new Products();
         $price = 0;
-
+        //var_dump($_SESSION['cart']->getCart());
         foreach(array_keys($_SESSION['cart']->getCart()) as $id)
         {
             $addedProduct = $productsObject->getProductById($id);
+            echo "here";
+            var_dump($addedProduct);
             $addedProduct['quantity'] = $_SESSION['cart']->getCart()[$id];
             $price += intval($addedProduct['quantity']) * intval($addedProduct['price']);
             //echo $addedProduct['quantity'];

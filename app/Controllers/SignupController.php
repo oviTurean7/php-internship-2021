@@ -39,6 +39,14 @@ class SignupController extends BaseController
         global $db;
         global $conn;
         $email = $_POST['email'];
+        $pattern = '/(.+@.+\..+)/';
+        $subject = 'a@m.c';
+        $res = preg_match($pattern, $subject);
+        if ($res === 0) {
+            echo 'Incorrect email format';
+            http_response_code(404);
+            return;
+        }
         $sql = "SELECT email, password FROM users WHERE email =  '$email'";
         //echo $sql . "\n";
 

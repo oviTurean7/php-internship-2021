@@ -24,5 +24,10 @@ $router->get('/login', 'LoginController@view');
 $router->post('/login', 'LoginController@login');
 $router->get('/signup', 'SignupController@view');
 $router->post('/signup', 'SignupController@signup');
+$router->get('/regex', 'RegexController@solve');
+//$router->get('/prodsToDb', 'ProductController@addProducts');
 $router->get('/confirm?token={test}', 'ConfirmController@confirm');
+
+
+
 return $router;

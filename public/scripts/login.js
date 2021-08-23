@@ -18,6 +18,7 @@ $(document).ready (function () {
                console.log(data);
                console.log('alabala');
                localStorage.setItem('logging', 'Log out');
+               $('#signup').hide();
                window.location.replace('http://php.local');
            },
            error: function(error) {
