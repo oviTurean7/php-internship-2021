@@ -63,12 +63,18 @@ class CartController extends BaseController
 
         $_SESSION['cart']->empty();
         var_dump($_SESSION['cart']);
+        unset($_SESSION['cart']);
     }
 
     public function view()
     {
         $this->bladeResponse(array('Ioana' => 1), 'products/cart');
 
+    }
+
+    public function placeOrder() {
+
+        $_SESSION['cart']->placeOrder();
     }
 
 }

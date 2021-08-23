@@ -97,9 +97,8 @@ $(document).ready(function () {
     $('#contactForm').submit(function (event) {
         event.preventDefault();
         if (input.files[0]) {
+            placeOrder();
             emptyCart();
-
-
 
         }
         else {
@@ -108,12 +107,31 @@ $(document).ready(function () {
     })
 });
 
+function placeOrder () {
+    $.ajax({
+        url: "/cart/order",
+        type: "POST",
+
+        success: function(data){
+
+            console.log(data);
+            //window.location.replace("http://php.local/");
+        },
+        error: function(msg) {
+            console.log("error");
+            console.log(msg);
+        }
+    });
+}
+
+
 function emptyCart () {
     $.ajax({
         url: "/cart",
         type: "DELETE",
 
         success: function(data){
+
             console.log(data);
             window.location.replace("http://php.local/");
         },

@@ -20,6 +20,7 @@ $router->get('/cart', 'CartController@view');
 $router->put('/cart/{id}', 'CartController@update');
 $router->delete('/cart/{id}', 'CartController@delete');
 $router->delete('/cart', 'CartController@empty');
+$router->post('/cart/order', 'CartController@placeOrder');
 $router->get('/login', 'LoginController@view');
 $router->post('/login', 'LoginController@login');
 $router->get('/signup', 'SignupController@view');

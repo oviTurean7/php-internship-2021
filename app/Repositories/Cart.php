@@ -40,6 +40,32 @@ class Cart
 
     }
 
+    public function placeOrder() {
+        global $conn;
+        $stmt = $conn->prepare("INSERT  INTO orders(total_price) VALUES (?)");
+
+        $stmt->bind_param("d", $total_price);
+        $total_price = $this->getTotalPrice();
+        $stmt->execute();
+
+        $stmt->close();
+
+        $stmt = $conn->prepare("INSERT  INTO order_items(product_id, order_id, number_of_units, price) VALUES (?, ?, ?, ?)");
+
+        $stmt->bind_param("iiii", $product_id, $order_id, $number_of_units, $price);
+        $order_id = $conn->insert_id;
+        foreach (array_keys($this->addedToCart) as $key) {
+            $product_id = intval($key);
+
+            $number_of_units = intval($this->addedToCart[$key]);
+            $price = 50;
+            $stmt->execute();
+        }
+
+        $stmt->close();
+
+    }
+
     public function empty() {
         $this->addedToCart = [];
     }

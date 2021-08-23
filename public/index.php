@@ -25,9 +25,14 @@ $_COOKIE['date'] = new DateTime();
 //session_destroy();
 if (empty($_SESSION['cart'])) {
     $_SESSION['cart'] = new Cart();
+}
+if (empty($_SESSION['column'] = "name")) {
     $_SESSION['column'] = "name";
+}
+if (empty($_SESSION['direction'])) {
     $_SESSION['direction'] = "asc";
 }
+
 unset($_COOKIE['date']);
 
 global $conn;
