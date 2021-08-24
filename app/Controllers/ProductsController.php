@@ -12,6 +12,14 @@ require_once '../Cart';
 
 class ProductsController extends BaseController
 {
+    private $cart;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $cart = new Cart(); //???
+    }
+
     private function getConnection() {
         global $configDB;
 
@@ -22,10 +30,23 @@ class ProductsController extends BaseController
         return $conn;
     }
 
+    private function getProducts() {
+        $conn = $this->getConnection();
+        $query = "SELECT * FROM `products`";
+        $result = $conn->query($query);
+        $products = [];
+        if ($result->num_rows > 0) {
+            while($product = $result->fetch_assoc()) {
+                $products[] = $product;
+            }
+        }
+
+        return $products;
+    }
+
     public function showProducts() {
-        $cart = new Cart();
-        $products = $cart->getProducts();
         session_start();
+        $products = getProducts();
 
         if (isset($_REQUEST['column']) && isset($_SESSION['columns'])) {
             usort($products, function ($p1, $p2) {
@@ -39,35 +60,28 @@ class ProductsController extends BaseController
     }
 
     public function addProduct() {
-        $cart = new Cart();
-        $cart->addProduct();
+        $this->cart->addProduct();
 
-        echo json_encode($_SESSION['cartProducts']);
+        echo json_encode($this->cart->getProducts());
         exit();
     }
 
     public function showCart() {
         session_start();
+        $products = $this->cart->getProducts();
 
-        if (isset($_SESSION['cartProducts'])) {
-            $this->bladeResponse(array('products' => $_SESSION['cartProducts']), 'products/cart');
+        if ($products) {
+            $this->bladeResponse(array('products' => $products), 'products/cart');
         }
     }
 
-    private function updateSessionProduct($product) {
-        session_start();
-
-        $index = array_search($product['id'], array_column($_SESSION['cartProducts'], 'id'));
-        $_SESSION['cartProducts'][$index] = $product;
-    }
-
     public function updateCart() {
-
+        $this->cart->updateCart();
+        $this->showCart();
     }
 
     public function removeCartProduct() {
-        $cart = new Cart();
-        $cart->removeProduct();
+        $this->cart->removeProduct();
         $this->showCart();
     }
 
@@ -103,8 +117,9 @@ class ProductsController extends BaseController
         session_start();
         $queryInsertOrderItems = "";
         $totalCost = 0;
+        $cartProducts = $this->cart->getProducts();
 
-        foreach ($_SESSION['cartProducts'] as $orderItem) {
+        foreach ($cartProducts as $orderItem) {
             $conn = $this->getConnection();
             $prodID = $orderItem['id'];
             $query = "SELECT units from `products` WHERE id = $prodID";
@@ -129,7 +144,7 @@ class ProductsController extends BaseController
             $orderID = $conn->insert_id;
         }
 
-        foreach ($_SESSION['cartProducts'] as $orderItem) {
+        foreach ($cartProducts as $orderItem) {
             $conn = $this->getConnection();
 
             $values = array_values($orderItem);

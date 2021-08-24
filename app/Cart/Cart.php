@@ -42,16 +42,10 @@ class Cart implements CartInterface {
     }
 
     public function getProducts() {
-        $conn = $this->getConnection();
-        $query = "SELECT * FROM `products`";
-        $result = $conn->query($query);
-        $products = [];
-        if ($result->num_rows > 0) {
-            while($product = $result->fetch_assoc()) {
-                $products[] = $product;
-            }
+        if (isset($_SESSION['cartProducts'])) {
+            return $_SESSION['cartProducts'];
         }
 
-        return $products;
+        return [];
     }
 }
