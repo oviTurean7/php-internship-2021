@@ -35,10 +35,10 @@ class CartController extends BaseController
     {
 
         $productsInCart = [];
-        $productsObject = new Products();
+        //$productsObject = new Products();
         $counter = 0;
         foreach (array_keys($_SESSION['cart']->getCart()) as $id) {
-            $addedProduct = $productsObject->getProductById($id);
+            $addedProduct = Products::getProductById($id);
             $addedProduct['quantity'] = $_SESSION['cart']->getCart()[$id];
             $productsInCart[$counter++] = $addedProduct;
         }
@@ -73,8 +73,11 @@ class CartController extends BaseController
     }
 
     public function placeOrder() {
-
-        $_SESSION['cart']->placeOrder();
+        $file_path = uploadsPath() . '/' . $_FILES['file']['name'];
+        var_dump( $file_path);
+        FileController::add();
+        //var_dump($_POST);
+        $_SESSION['cart']->placeOrder($_POST, $file_path);
     }
 
 }

@@ -15,7 +15,8 @@ class ConfirmController extends BaseController
         //var_dump($result->fetch_assoc());
         if ($result->num_rows === 0) {
             //echo 'tzeapa';
-            header("LOCATION: http://php.local");;
+            header("LOCATION: http://php.local");
+            //$this->bladeResponse([], 'products/list');
         }
         $id = $result->fetch_assoc()['id'];
         $sql = "UPDATE users SET confirmed = 1 WHERE id = '$id'";
@@ -23,7 +24,8 @@ class ConfirmController extends BaseController
         $result = $conn->query($sql);
 
         //echo $result;
-        header("LOCATION: http://php.local");;
+        header("LOCATION: http://php.local");
+        //$this->bladeResponse([], 'products/list');
         //$this->bladeResponse(array('Ioana' => 1), 'products/list');
 
 

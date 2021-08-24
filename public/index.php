@@ -5,7 +5,13 @@ use App\Repositories\Cart;
 
 require_once '../vendor/autoload.php';
 
-session_start();
+//var_dump($_COOKIE['logged']);
+if (!isset($_SESSION['logged'])) {
+//if (session_status() === PHP_SESSION_NONE) {
+    //echo "here";
+    session_start();
+}
+
 
 $request = new App\Core\Request();
 
@@ -26,7 +32,7 @@ $_COOKIE['date'] = new DateTime();
 if (empty($_SESSION['cart'])) {
     $_SESSION['cart'] = new Cart();
 }
-if (empty($_SESSION['column'] = "name")) {
+if (empty($_SESSION['column'])) {
     $_SESSION['column'] = "name";
 }
 if (empty($_SESSION['direction'])) {

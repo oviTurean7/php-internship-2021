@@ -22,12 +22,18 @@ $router->delete('/cart/{id}', 'CartController@delete');
 $router->delete('/cart', 'CartController@empty');
 $router->post('/cart/order', 'CartController@placeOrder');
 $router->get('/login', 'LoginController@view');
+$router->get('/login/forgot-password', 'LoginController@emailView');
+$router->post('/login/forgot-password', 'LoginController@forgotPassword');
 $router->post('/login', 'LoginController@login');
+$router->post('/logout', 'LoginController@logout');
 $router->get('/signup', 'SignupController@view');
 $router->post('/signup', 'SignupController@signup');
 $router->get('/regex', 'RegexController@solve');
 //$router->get('/prodsToDb', 'ProductController@addProducts');
+
 $router->get('/confirm?token={test}', 'ConfirmController@confirm');
+$router->get('/recover?token={test}', 'LoginController@changePasswordView');
+$router->post('/recover?token={test}', 'LoginController@changePassword');
 
 
 

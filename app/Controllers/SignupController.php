@@ -20,20 +20,15 @@ class SignupController extends BaseController
         return $jwt;
     }
 
-    private function mail($recepient, $token) {
-        $link = 'http://php.local/confirm?token=' . $token;
-        $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl'))
-            ->setUsername('phpproject50@gmail.com')
-            ->setPassword('projectPhpLocal123!');
-        $mailer = new Swift_Mailer($transport);
-// Create a message
-        $message = (new Swift_Message('Confirm your account'))
-            ->setFrom(['phpproject50@gmail.com' => 'My Project'])
-            ->setTo([$recepient])
-            ->setBody('Confirm your account: ' . $link);
-// Send the message
-        $result = $mailer->send($message);
+    static function decode($token) {
+        $payload64UrlPayload = explode(".", $token)[1];
+        $payload64 = str_replace(['-', '_', ''], ['+', '/', '='], $payload64UrlPayload);
+        $payload = base64_decode($payload64);
+        return json_decode($payload);;
+
     }
+
+
 
     public function signup() {
         global $db;
@@ -78,7 +73,7 @@ class SignupController extends BaseController
         $stmt->execute();
 
         $stmt->close();
-        $this->mail($email, $token);
+        EmailController::mail($email, $token);
         //echo "Success";
     }
 

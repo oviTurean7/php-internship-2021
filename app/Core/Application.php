@@ -43,6 +43,7 @@ class Application
         }
 
         //identify the route and call the controller method, return the response from the controller
+
         $route = $this->router->getRouteAction($uri, $method);
         $action = $route['action'];
         $parameters = isset($route['parameters']) && count($route['parameters']) ? $route['parameters'] : [];

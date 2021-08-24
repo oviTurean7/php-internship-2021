@@ -97,8 +97,15 @@ $(document).ready(function () {
     $('#contactForm').submit(function (event) {
         event.preventDefault();
         if (input.files[0]) {
-            placeOrder();
-            emptyCart();
+            let file = $("#upload").prop('files')[0];
+            let formData = new FormData();
+            formData.append('firstName', $('#firstName').val());
+            formData.append('lastName', $('#lastName').val());
+            formData.append('email', $('#email').val());
+            formData.append('address', $('#address').val());
+            formData.append('file', file);
+            placeOrder(formData);
+
 
         }
         else {
@@ -107,14 +114,21 @@ $(document).ready(function () {
     })
 });
 
-function placeOrder () {
+function placeOrder (formData) {
+
+
     $.ajax({
         url: "/cart/order",
         type: "POST",
-
+        dataType: 'text',  // <-- what to expect back from the PHP script, if anything
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
         success: function(data){
 
             console.log(data);
+            emptyCart();
             //window.location.replace("http://php.local/");
         },
         error: function(msg) {
@@ -132,7 +146,7 @@ function emptyCart () {
 
         success: function(data){
 
-            console.log(data);
+            console.log("emptyy");
             window.location.replace("http://php.local/");
         },
         error: function(msg) {

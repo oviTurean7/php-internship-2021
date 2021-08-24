@@ -40,7 +40,9 @@ class LoginController extends BaseController
                 return;
             }
 
-            $_COOKIE['logged'] = true;
+            $_SESSION['logged'] = true;
+            $_SESSION['email'] = $email;
+            session_start();
             echo "Success";
         } else {
             $sql = "SELECT email, password FROM users WHERE email =  '$email'";
@@ -59,6 +61,33 @@ class LoginController extends BaseController
 
         }
 
+    }
+
+    public function logout() {
+        unset($_SESSION['logged']);
+        unset($_SESSION['email']);
+        session_destroy();
+
+    }
+
+    public function changePasswordView() {
+        $this->bladeResponse(array('Ioana' => 1), 'products/password');
+        //$token = $_GET['token'];
+
+    }
+
+    public function changePassword() {
+        $token = $_GET['token'];
+        //$this->bladeResponse(array('Ioana' => 1), 'products/password');
+    }
+
+    public function forgotPassword() {
+        //EmailController::passwordRecovery($_POST['email'], SignupController::tokenize(['email' => $_POST['email'], 'recovery' => 'true']));
+        var_dump(SignupController::decode(strval('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImlvbW8yMDEwQHlhaG9vLmNvbSJ9.0EpFpXYBAJCAz8UaCDKek4qrr0Ppe_F_KRsMAMcLHMg'))->email);
+    }
+
+    public function emailView() {
+        $this->bladeResponse(array('Ioana' => 1), 'products/email');
     }
 
 

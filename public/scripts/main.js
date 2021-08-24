@@ -12,8 +12,18 @@ $(document).ready(function () {
 
 $('#logging').click(function () {
     if (localStorage.getItem('logging') !== null) {
-        localStorage.removeItem('logging');
-        window.location.reload();
+        $.ajax({
+            url: "/logout",
+            type: "POST",
+            success: function () {
+                localStorage.removeItem('logging');
+                setTimeout(()=>window.location.reload(), 100);
+            },
+            error: function (message) {
+                console.log(message);
+            }
+        });
+
     }
     else {
 

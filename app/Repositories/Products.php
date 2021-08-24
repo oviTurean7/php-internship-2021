@@ -8,6 +8,7 @@ $result = $conn->query($sql);
 
 $products = $result->fetch_all(MYSQLI_ASSOC);
 //var_dump($products);
+//$products = (require_once dataPath() . "/products.php")['products'];
 
 class Products
 {
@@ -30,7 +31,7 @@ class Products
         }
     }
 
-    public function getProductById($productId) {
+    static public function getProductById($productId) {
 
 
         //var_dump( $products);

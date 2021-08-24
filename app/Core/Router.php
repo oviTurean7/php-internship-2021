@@ -94,34 +94,44 @@ class Router
 
         $routeParts = explode('/', $path);
         $targetRoute = trim($route['name'], '/');
+
+        $targetRoute2 = (strpos($targetRoute, '?') !== false) ? strstr($targetRoute, '?', true) : $targetRoute;
+
         $comparingRouteParts = explode('/', $targetRoute);
 
         if (count($routeParts) !== count($comparingRouteParts)) {
         return false;
         }
 
-        for ($index = 0; $index < count($routeParts); $index++) {
-            $routePart = $routeParts[$index];
-            $comparingRoutePart = $comparingRouteParts[$index];
+        if (count(array_intersect($routeParts, explode('/', $targetRoute2))) == count($routeParts)){
+            for ($index = 0; $index < count($routeParts); $index++) {
+                $routePart = $routeParts[$index];
+                $comparingRoutePart = $comparingRouteParts[$index];
 
-            $openBrace = strpos($comparingRoutePart, '{');
-            $closeBrace = strpos($comparingRoutePart, '}');
-            if ($openBrace !== false && $closeBrace !== false && $openBrace < $closeBrace) {
-                //if the compared route contains {something} this matches anything
-                //TODO - here we should fill the parameters for the controller after oop course 5
-                $this->parameters[] = $routePart;
-                continue;
-            }
+                $openBrace = strpos($comparingRoutePart, '{');
+                $closeBrace = strpos($comparingRoutePart, '}');
+                if ($openBrace !== false && $closeBrace !== false && $openBrace < $closeBrace) {
+                    //if the compared route contains {something} this matches anything
+                    //TODO - here we should fill the parameters for the controller after oop course 5
+                    $this->parameters[] = $routePart;
+                    continue;
+                }
 
-            //any of them is present but not both or in the wrong order
-            if ($openBrace || $closeBrace) {
-                return false;
-            }
+                //any of them is present but not both or in the wrong order
+                if ($openBrace || $closeBrace) {
+                    return false;
+                }
 
-            if ($routePart !== $comparingRoutePart) {
-                return false;
+                if ($routePart !== $comparingRoutePart) {
+                    return false;
+                }
             }
         }
+        else {
+            return false;
+        }
+
+
 
         return true;
     }
