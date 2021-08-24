@@ -3,8 +3,12 @@
 namespace App\Controllers;
 
 global $configDB;
+
+use App\Cart\Cart;
+
 $configDB = require_once basePath() . '/configDB.php';
 require_once basePath() . '/vendor/autoload.php';
+require_once '../Cart';
 
 class ProductsController extends BaseController
 {
@@ -18,22 +22,9 @@ class ProductsController extends BaseController
         return $conn;
     }
 
-    private function getProducts() {
-        $conn = $this->getConnection();
-        $query = "SELECT * FROM `products`";
-        $result = $conn->query($query);
-        $products = [];
-        if ($result->num_rows > 0) {
-            while($product = $result->fetch_assoc()) {
-                $products[] = $product;
-            }
-        }
-
-        return $products;
-    }
-
     public function showProducts() {
-        $products = $this->getProducts();
+        $cart = new Cart();
+        $products = $cart->getProducts();
         session_start();
 
         if (isset($_REQUEST['column']) && isset($_SESSION['columns'])) {
@@ -48,23 +39,11 @@ class ProductsController extends BaseController
     }
 
     public function addProduct() {
+        $cart = new Cart();
+        $cart->addProduct();
 
-        if (isset($_POST['product'])) {
-            session_start();
-            $product = $_POST['product'];
-
-            if (isset($_SESSION['cartProducts'])) {
-                if (!in_array($product, $_SESSION['cartProducts']))
-                    array_push($_SESSION['cartProducts'], $product);
-            }
-            else {
-                $_SESSION['cartProducts'] = array();
-                array_push($_SESSION['cartProducts'], $product);
-            }
-
-            echo json_encode($_SESSION['cartProducts']);
-            exit();
-        }
+        echo json_encode($_SESSION['cartProducts']);
+        exit();
     }
 
     public function showCart() {
@@ -83,20 +62,13 @@ class ProductsController extends BaseController
     }
 
     public function updateCart() {
-        if (isset($_POST['product'])) {
-            $this->updateSessionProduct($_POST['product']);
-            $this->showCart();
-        }
+
     }
 
     public function removeCartProduct() {
-        session_start();
-
-        if (isset($_GET['id'])) {
-            $index = array_search($_GET['id'], array_column($_SESSION['cartProducts'], 'id'));
-            array_splice($_SESSION['cartProducts'], $index, 1);
-            $this->showCart();
-        }
+        $cart = new Cart();
+        $cart->removeProduct();
+        $this->showCart();
     }
 
     public function validateBuyer() {
@@ -112,12 +84,12 @@ class ProductsController extends BaseController
             ->setPassword($config['mailPassword']);
 
         $mailer = new \Swift_Mailer($transport);
-// Create a message
+        // Create a message
         $message = (new \Swift_Message('First email'))
             ->setFrom(['robert3paul@gmail.com' => 'Robert Gherghel'])
             ->setTo([$_SESSION['user']['email']])
             ->setBody($body);
-// Send the message
+        // Send the message
         try {
             $result = $mailer->send($message);
         }
