@@ -1,6 +1,6 @@
 <?php
 
-//namespace App\public\oop;
+//namespace
 require_once './Shape.php';
 
 class Circle extends Shape {

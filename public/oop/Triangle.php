@@ -2,8 +2,9 @@
 
 require_once './Polygon.php';
 
-
 class Triangle extends Polygon {
+
+    static $SUBDOMAIN = "3 side polygon";
 
     public function __construct($l1, $l2, $l3)
     {
