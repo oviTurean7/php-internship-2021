@@ -24,7 +24,7 @@
   ],
   "license" : "MIT",
   "require": {
-    "php": ">=7.0",
+    "php": ">=8.0",
     "jenssegers/blade": "^1.2",
     "swiftmailer/swiftmailer": "^6.2"
   },
