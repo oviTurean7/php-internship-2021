@@ -99,8 +99,53 @@ class ProductsController extends BaseController
     }
 
     public function validateBuyer() {
-        session_start();
-        foreach ($_SESSION['cartProducts'] as $orderItem)
-            var_dump($orderItem);
+        //some validation
+        $this->proceed();
     }
+
+    private function proceed()
+    {
+        session_start();
+        $queryInsertOrderItems = "";
+        $totalCost = 0;
+
+        foreach ($_SESSION['cartProducts'] as $orderItem) {
+            $conn = $this->getConnection();
+            $prodID = $orderItem['id'];
+            $query = "SELECT units from `products` WHERE id = $prodID";
+            $result = $conn->query($query);
+            if ($result->num_rows > 0) {
+                $dbProduct = $result->fetch_assoc();
+                if ($dbProduct['units'] < $orderItem['quantity']) {
+                    //send warning mail
+                    die('Stock not enough');
+                } else {
+                    $totalCost += $orderItem['quantity'] * $orderItem['price'];
+                }
+            }
+        }
+        $conn = $this->getConnection();
+        $date = date('m/d/Y h:i:s a', time());
+        $query = "INSERT INTO `orders`(date, total_price) VALUES('$date', $totalCost)";
+        $result = $conn->query($query);
+        $orderID = 0;
+
+        if ($result) {
+            $orderID = $conn->insert_id;
+        }
+
+        foreach ($_SESSION['cartProducts'] as $orderItem) {
+            $conn = $this->getConnection();
+
+            $values = array_values($orderItem);
+            $itemPrice = $values[5] * $values[2];
+
+            $queryInsertOrderItems .= "INSERT INTO `order_items`(product_id, units_num, price, order_id) VALUES($values[0], $values[5], $itemPrice, $orderID);";
+            $conn->multi_query($queryInsertOrderItems);
+        }
+        //send confirmation mail
+        unset($_SESSION['cartProducts']);
+    }
+
+
 }
