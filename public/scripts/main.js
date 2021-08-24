@@ -20,22 +20,22 @@ $(document).ready(function () {
     }
 
     $('.cart-form').on('submit', function (e) {
-        const elemIDs = ['#fname', '#lname', '#email', '#address']
-        let isValid = 0
-        elemIDs.forEach(id => {
-            console.log($(id))
-            if ($(id).val().length > 0) {
-                $(id).removeClass('form-input')
-                isValid++
-            }
-            else $(id).addClass('form-input')
-        })
-
-        console.log(isValid)
-        if (isValid !== elemIDs.length) {
-            e.preventDefault();
-            alert('NOT VALID FORM');
-        }
+        // const elemIDs = ['#fname', '#lname', '#email', '#address']
+        // let isValid = 0
+        // elemIDs.forEach(id => {
+        //     console.log($(id))
+        //     if ($(id).val().length > 0) {
+        //         $(id).removeClass('form-input')
+        //         isValid++
+        //     }
+        //     else $(id).addClass('form-input')
+        // })
+        //
+        // console.log(isValid)
+        // if (isValid !== elemIDs.length) {
+        //     e.preventDefault();
+        //     alert('NOT VALID FORM');
+        // }
     })
 });
 

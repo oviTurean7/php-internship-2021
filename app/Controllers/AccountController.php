@@ -1,9 +1,6 @@
 <?php
 
 namespace App\Controllers;
-const PASSWORD = 'mail_password';
-
-
 
 global $configDB;
 $configDB = require_once basePath() . '/configDB.php';
@@ -30,7 +27,7 @@ class AccountController extends BaseController
         if($confirmed == 1) {
             session_start();
             $_SESSION['user'] = array("email" => $email, "password" => $hashPass, "token" => $token);
-            header('Location: ' . $config['url'] . '/home');
+            header('Location: ' . $config['url'] . '/products');
         }
     }
 
@@ -72,15 +69,17 @@ class AccountController extends BaseController
     }
 
     private function sendEmail($email, $token) {
+        global $config;
+
         $transport = (new \Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl'))
             ->setUsername('robert3paul')
-            ->setPassword(PASSWORD);
+            ->setPassword($config['mailPassword']);
 
         $mailer = new \Swift_Mailer($transport);
 // Create a message
         $message = (new \Swift_Message('First email'))
             ->setFrom(['robert3paul@gmail.com' => 'Robert Gherghel'])
-            ->setTo(['robert.gherghel@bitstone.eu'])
+            ->setTo([$email])
             ->setBody("Confirmation link: http://internship.local/confirm?token=$token");
 // Send the message
         try {
@@ -118,7 +117,7 @@ class AccountController extends BaseController
     }
 
     public function checkRegisterData() {
-        if (isset($_REQUEST['email']) && strlen($_REQUEST['email']) > 5 && isset($_REQUEST['password']) && strlen($_REQUEST['password']) > 3 && isset($_REQUEST['fname']) && strlen($_REQUEST['fname']) > 2 && isset($_REQUEST['lname']) && strlen($_REQUEST['lname']) > 2 && isset($_REQUEST['address']) && strlen($_REQUEST['address']) > 5) {
+        if (isset($_REQUEST['email']) && strlen($_REQUEST['email']) > 5 && isset($_REQUEST['password']) && strlen($_REQUEST['password']) > 3 && isset($_REQUEST['fname']) && strlen($_REQUEST['fname']) >= 2 && isset($_REQUEST['lname']) && strlen($_REQUEST['lname']) >= 2 && isset($_REQUEST['address']) && strlen($_REQUEST['address']) >= 3) {
             $this->register($_REQUEST['email'], $_REQUEST['password'], $_REQUEST['fname'], $_REQUEST['lname'], $_REQUEST['address']);
         }
     }
@@ -135,7 +134,7 @@ class AccountController extends BaseController
                 $conn = $this->setConnection();
                 $setConfirmed = "UPDATE `users` set `confirmed`=1 WHERE `id` = $userID";
                 $conn->query($setConfirmed);
-
+                echo 'HOLA';
                 $this->login($result['email'], $result['password'], $result['token'], 1);
             }
         }

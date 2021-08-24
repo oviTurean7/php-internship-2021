@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 global $configDB;
 $configDB = require_once basePath() . '/configDB.php';
+require_once basePath() . '/vendor/autoload.php';
 
 class ProductsController extends BaseController
 {
@@ -103,6 +104,28 @@ class ProductsController extends BaseController
         $this->proceed();
     }
 
+    private function sendEmail($body) {
+        global $config;
+
+        $transport = (new \Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl'))
+            ->setUsername('robert3paul')
+            ->setPassword($config['mailPassword']);
+
+        $mailer = new \Swift_Mailer($transport);
+// Create a message
+        $message = (new \Swift_Message('First email'))
+            ->setFrom(['robert3paul@gmail.com' => 'Robert Gherghel'])
+            ->setTo([$_SESSION['user']['email']])
+            ->setBody($body);
+// Send the message
+        try {
+            $result = $mailer->send($message);
+        }
+        catch (\Exception $exception) {
+            var_dump($exception->getMessage());
+        }
+    }
+
     private function proceed()
     {
         session_start();
@@ -117,7 +140,7 @@ class ProductsController extends BaseController
             if ($result->num_rows > 0) {
                 $dbProduct = $result->fetch_assoc();
                 if ($dbProduct['units'] < $orderItem['quantity']) {
-                    //send warning mail
+                    $this->sendEmail("Insufficient stock for product: " . $orderItem['name']);
                     die('Stock not enough');
                 } else {
                     $totalCost += $orderItem['quantity'] * $orderItem['price'];
@@ -143,7 +166,7 @@ class ProductsController extends BaseController
             $queryInsertOrderItems .= "INSERT INTO `order_items`(product_id, units_num, price, order_id) VALUES($values[0], $values[5], $itemPrice, $orderID);";
             $conn->multi_query($queryInsertOrderItems);
         }
-        //send confirmation mail
+        $this->sendEmail("Order placed successfully");
         unset($_SESSION['cartProducts']);
     }
 
