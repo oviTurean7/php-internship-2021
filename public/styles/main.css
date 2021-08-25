@@ -196,3 +196,21 @@ form input:focus {
     list-style: none;
     padding: 0;
 }
+
+#form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    max-width: 300px;
+}
+
+.login-form-item {
+    padding: 5px;
+    margin: 5px;
+}
