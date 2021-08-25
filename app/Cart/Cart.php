@@ -1,10 +1,7 @@
 <?php
 
-
 namespace App\Cart;
 
-global $configDB;
-$configDB = require_once basePath() . '/configDB.php';
 require_once basePath() . '/vendor/autoload.php';
 
 class Cart implements CartInterface {
@@ -42,6 +39,8 @@ class Cart implements CartInterface {
     }
 
     public function getProducts() {
+        session_start();
+
         if (isset($_SESSION['cartProducts'])) {
             return $_SESSION['cartProducts'];
         }

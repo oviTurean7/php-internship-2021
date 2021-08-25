@@ -42,7 +42,6 @@ $(document).ready(function () {
 function addToCart(product) {
     console.log('ADD IN CART')
     product.quantity = 1
-
     $.ajax({
         url: '/add-product',
         type: "POST",
