@@ -77,13 +77,41 @@ class LoginController extends BaseController
     }
 
     public function changePassword() {
-        $token = $_GET['token'];
+        $token = $_POST['token'];
+        $newPassword = md5($_POST['password']);
+        $decoded = (SignupController::decode($token));
+        if ($decoded->recovery !== "true")
+            return;
+        $email = (SignupController::decode($token))->email;
+        global $conn;
+        $sql = "UPDATE users SET password='$newPassword' WHERE email =  '$email'";
+        //echo $sql . "\n";
+
+        $result = $conn->query($sql);
+        echo $result;
+
         //$this->bladeResponse(array('Ioana' => 1), 'products/password');
     }
 
     public function forgotPassword() {
-        //EmailController::passwordRecovery($_POST['email'], SignupController::tokenize(['email' => $_POST['email'], 'recovery' => 'true']));
-        var_dump(SignupController::decode(strval('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImlvbW8yMDEwQHlhaG9vLmNvbSJ9.0EpFpXYBAJCAz8UaCDKek4qrr0Ppe_F_KRsMAMcLHMg'))->email);
+        $email = $_POST['email'];
+        global $conn;
+        $sql = "SELECT email, password FROM users WHERE email =  '$email'";
+        //echo $sql . "\n";
+
+        $result = $conn->query($sql);
+        //var_dump ($result);
+        if ($result->num_rows !== 0) {
+            echo 'has email';
+            //http_response_code(404);
+        }
+        else {
+            echo 'No such user';
+            //http_response_code(404);
+            return;
+        }
+        EmailController::passwordRecovery($_POST['email'], SignupController::tokenize(['email' => $_POST['email'], 'recovery' => 'true']));
+        //var_dump(SignupController::decode(strval('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImlvbW8yMDEwQHlhaG9vLmNvbSJ9.0EpFpXYBAJCAz8UaCDKek4qrr0Ppe_F_KRsMAMcLHMg'))->email);
     }
 
     public function emailView() {

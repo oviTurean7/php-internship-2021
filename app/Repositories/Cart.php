@@ -6,7 +6,7 @@ use App\Controllers\EmailController;
 use App\Controllers\FileController;
 use Illuminate\Support\Facades\Date;
 
-class Cart
+class Cart implements \App\Cart\Cart
 {
     protected array $addedToCart;
 

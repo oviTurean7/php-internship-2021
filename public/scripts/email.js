@@ -16,11 +16,11 @@ $(document).ready (function () {
                 console.log(data);
                 if (data === "has email") {
                     $('#submitSuccess').children(0).text('You have been sent an email with the following steps');
-                    $('#submitSuccess').show();
+                    $('#submitSuccess').removeClass("d-none");
                 }
                 else {
                     $('#submitSuccess').children(0).html('You do not have an account. <a href="http://php.local/signup">Sign up here</a>');
-                    $('#submitSuccess').show();
+                    $('#submitSuccess').removeClass("d-none");
                 }
 
             },

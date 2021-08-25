@@ -25,6 +25,11 @@ function uploadsPath()
     return __DIR__ . '/public/uploads';
 }
 
+function oopPath()
+{
+    return __DIR__ . '/public/oop';
+}
+
 function databasePath()
 {
     return __DIR__ . '/public/database';

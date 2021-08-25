@@ -52,6 +52,18 @@
                         </div>
                         <div class="col-3"></div>
                     </div>
+                    <div class="row">
+                        <div class="col-3"></div>
+                        <div class="col-6 align-content-center">
+
+
+                            <!-- Name input-->
+                            <a  href="http://php.local/login/forgot-password">Forgot your password?</a>
+
+                        </div>
+                        <div class="col-3"></div>
+
+                    </div>
 
 
                 <!-- Submit success message-->
