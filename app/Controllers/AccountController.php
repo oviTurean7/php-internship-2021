@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-global $configDB;
-$configDB = require_once basePath() . '/configDB.php';
+use App\DAL\DBConnection;
+
 require_once basePath() . '/vendor/autoload.php';
 
 class AccountController extends BaseController
@@ -12,18 +12,9 @@ class AccountController extends BaseController
         $this->bladeResponse([], '/account/login');
     }
 
-    private function setConnection() {
-        global $configDB;
-
-        $conn = new \mysqli($configDB['database']['server'], $configDB['database']['user'], $configDB['database']['password'], $configDB['database']['name']);
-        if (!$conn) {
-            die('Connection failed:' . $conn->connect_error);
-        }
-        return $conn;
-    }
-
     private function login($email, $hashPass, $token, $confirmed = 0) {
         global $config;
+
         if($confirmed == 1) {
             session_start();
             $_SESSION['user'] = array("email" => $email, "password" => $hashPass, "token" => $token);
@@ -33,19 +24,18 @@ class AccountController extends BaseController
 
     public function checkLoginData() {
         if (isset($_REQUEST['email'])) {
-            $conn = $this->setConnection();
             $email = $_REQUEST['email'];
             $password = $_REQUEST['password'];
 
             $query = "SELECT `email`, `password`, `confirmed`, `token` from `users` WHERE strcmp(`email`,'$email') = 0";
-            $result = $conn->query($query);
+            $dbConnection = new DBConnection();
+            $result = $dbConnection->getSingleData($query);
 
-            if ($result->num_rows > 0) {
-                $row = $result->fetch_assoc();
-                $hashPass = md5($row['password']);
+            if ($result) {
+                $hashPass = md5($result['password']);
 
                 if (strcmp(md5($password), $hashPass) === 0) {
-                    $this->login($row['email'], $hashPass, $row['token']);
+                    $this->login($result['email'], $hashPass, $result['token'], $result['confirmed']);
                 }
             }
             else {
@@ -91,25 +81,26 @@ class AccountController extends BaseController
     }
 
     private function register($email, $password, $fname, $lname, $address) {
-        $conn = $this->setConnection();
         $query = "SELECT `email`, `password` from `users` WHERE strcmp(`email`,'$email') = 0";
-        $result = $conn->query($query);
+        $dbConnection = new DBConnection();
+        $result = $dbConnection->getSingleData($query);
 
-        if ($result->num_rows === 0) {
-            $conn = $this->setConnection();
+        if (!$result) {
+            $dbConnection = new DBConnection();
             $query = "INSERT INTO `users`(email, password, first_name, last_name, address) VALUES('$email', '$password', '$fname', '$lname', '$address')";
-            $result = $conn->query($query);
-            if ($result) {
-                $conn = $this->setConnection();
-                $query = "SELECT `id` from `users` WHERE strcmp(`email`,'$email') = 0";
-                $queryResult = $conn->query($query);
-                $row = $queryResult->fetch_assoc();
+            $insertResult = $dbConnection->insertData($query);
 
-                $userID = $row['id'];
-                $token = md5(uniqid($row['id'], true));
-                $conn = $this->setConnection();
+            if ($insertResult) {
+                $dbConnection = new DBConnection();
+                $query = "SELECT `id` from `users` WHERE strcmp(`email`,'$email') = 0";
+                $user = $dbConnection->getSingleData($query);
+
+                $userID = $user['id'];
+                $token = md5(uniqid($user['id'], true));
+
+                $dbConnection = new DBConnection();
                 $setToken = "UPDATE `users` set `token`='$token' WHERE `id` = $userID";
-                $conn->query($setToken);
+                $dbConnection->updateData($setToken);
 
                 $this->sendEmail($email, $token);
             }
@@ -125,16 +116,17 @@ class AccountController extends BaseController
     public function confirmMail() {
         if (isset($_REQUEST['token'])) {
             $token = $_REQUEST['token'];
-            $conn = $this->setConnection();
+            $dbConnection = new DBConnection();
             $query = "SELECT * from `users` WHERE strcmp(`token`,'$token') = 0";
-            $queryResult = $conn->query($query);
-            if ($queryResult->num_rows > 0) {
-                $result = $queryResult->fetch_assoc();
+            $result = $dbConnection->getSingleData($query);
+
+            if ($result) {
                 $userID = $result['id'];
-                $conn = $this->setConnection();
+
+                $dbConnection = new DBConnection();
                 $setConfirmed = "UPDATE `users` set `confirmed`=1 WHERE `id` = $userID";
-                $conn->query($setConfirmed);
-                echo 'HOLA';
+                $dbConnection->updateData($setConfirmed);
+
                 $this->login($result['email'], $result['password'], $result['token'], 1);
             }
         }

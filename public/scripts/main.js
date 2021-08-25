@@ -48,6 +48,7 @@ function addToCart(product) {
         data: {product},
         datatype: "json",
         success: function (data) {
+            console.log(data)
             let totalCost = 0
             let totalQuantity = 0
             const cartProducts = JSON.parse(data)

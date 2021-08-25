@@ -3,9 +3,7 @@
 namespace App\Controllers;
 
 use App\Cart\Cart;
-
-//global $configDB;
-//$configDB = require_once basePath() . '/configDB.php';
+use App\DAL\DBConnection;
 
 require_once basePath() . '/vendor/autoload.php';
 require_once basePath() . '/App/Cart/Cart.php';
@@ -52,7 +50,7 @@ class ProductsController extends BaseController
     public function addProduct() {
         $this->cart->addProduct();
 
-        echo json_encode($this->cart->getProducts());
+        echo json_encode($_SESSION['cartProducts']);
         exit();
     }
 
@@ -89,7 +87,7 @@ class ProductsController extends BaseController
         // Create a message
         $message = (new \Swift_Message('First email'))
             ->setFrom(['robert3paul@gmail.com' => 'Robert Gherghel'])
-            ->setTo([$_SESSION['user']['email']])
+            ->setTo($_SESSION['user']['email'])
             ->setBody($body);
         // Send the message
         try {
@@ -102,46 +100,45 @@ class ProductsController extends BaseController
 
     private function proceed()
     {
-        session_start();
         $queryInsertOrderItems = "";
         $totalCost = 0;
         $cartProducts = $this->cart->getProducts();
 
         foreach ($cartProducts as $orderItem) {
-            $conn = getConnection();
             $prodID = $orderItem['id'];
             $query = "SELECT units from `products` WHERE id = $prodID";
-            $result = $conn->query($query);
-            if ($result->num_rows > 0) {
-                $dbProduct = $result->fetch_assoc();
-                if ($dbProduct['units'] < $orderItem['quantity']) {
-                    $this->sendEmail("Insufficient stock for product: " . $orderItem['name']);
-                    die('Stock not enough');
-                } else {
-                    $totalCost += $orderItem['quantity'] * $orderItem['price'];
-                }
+            $dbConnection = new DBConnection();
+            $dbProduct = $dbConnection->getSingleData($query);
+
+            if ($dbProduct['units'] < $orderItem['quantity']) {
+                $this->sendEmail("Insufficient stock for product: " . $orderItem['name']);
+                die('Stock not enough');
+            } else {
+                $totalCost += $orderItem['quantity'] * $orderItem['price'];
             }
         }
-        $conn = getConnection();
+        $dbConnection = new DBConnection();
         $date = date('m/d/Y h:i:s a', time());
         $query = "INSERT INTO `orders`(date, total_price) VALUES('$date', $totalCost)";
-        $result = $conn->query($query);
+        $result = $dbConnection->insertData($query);
         $orderID = 0;
 
         if ($result) {
-            $orderID = $conn->insert_id;
+            $orderID = $dbConnection->insert_id;
         }
 
         foreach ($cartProducts as $orderItem) {
-            $conn = getConnection();
+            $dbConnection = new DBConnection();
 
             $values = array_values($orderItem);
             $itemPrice = $values[5] * $values[2];
 
             $queryInsertOrderItems .= "INSERT INTO `order_items`(product_id, units_num, price, order_id) VALUES($values[0], $values[5], $itemPrice, $orderID);";
-            $conn->multi_query($queryInsertOrderItems);
+            $dbConnection->insertMultipleData($queryInsertOrderItems);
         }
         $this->sendEmail("Order placed successfully");
+
+        session_start();
         unset($_SESSION['cartProducts']);
     }
 
