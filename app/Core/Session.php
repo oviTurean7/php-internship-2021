@@ -4,9 +4,17 @@ namespace App\Core;
 
 class Session
 {
+
+    private function startSession() {
+        if(!isset($_SESSION))
+        {
+            session_start();
+        }
+    }
+
     public function get($name)
     {
-        session_start();
+        $this->startSession();
         if (isset($_SESSION[$name]))
             return $_SESSION[$name];
 
@@ -15,7 +23,7 @@ class Session
 
     public function put($name, $data)
     {
-        session_start();
+        $this->startSession();
         if (isset($_SESSION[$name]) && is_array($_SESSION[$name])) {
             $_SESSION[$name][] = $data;
         } else {
@@ -25,14 +33,14 @@ class Session
 
     public function forget($name)
     {
-        session_start();
+        $this->startSession();
         if (isset($_SESSION[$name]))
             unset($_SESSION[$name]);
     }
 
     public function isSet($name)
     {
-        session_start();
+        $this->startSession();
         return isset($_SESSION[$name]);
     }
 }

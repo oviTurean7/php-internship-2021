@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Cart\Cart;
 use App\DAL\DBConnection;
 use App\Core\Session;
+use App\Core\Config;
 
 require_once basePath() . '/vendor/autoload.php';
 
@@ -87,11 +88,11 @@ class ProductsController extends BaseController
 
     private function sendEmail($body)
     {
-        global $config;
+        $config = new Config();
 
         $transport = (new \Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl'))
             ->setUsername('robert3paul')
-            ->setPassword($config['mailPassword']);
+            ->setPassword($config->get('mailPassword'));
 
         $mailer = new \Swift_Mailer($transport);
         // Create a message

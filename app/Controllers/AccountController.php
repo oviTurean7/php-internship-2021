@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Core\Config;
 use App\DAL\DBConnection;
 use App\Core\Session;
 
@@ -16,13 +17,13 @@ class AccountController extends BaseController
 
     private function login($email, $hashPass, $token, $confirmed = 0)
     {
-        global $config;
+        $config = new Config();
 
         if ($confirmed == 1) {
             $session = new Session();
 
             $session->put('user', array("email" => $email, "password" => $hashPass, "token" => $token));
-            header('Location: ' . $config['url'] . '/products');
+            header('Location: ' . $config->get('url') . '/products');
         }
     }
 
@@ -65,11 +66,11 @@ class AccountController extends BaseController
 
     private function sendEmail($email, $token)
     {
-        global $config;
+        $config = new Config();
 
         $transport = (new \Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl'))
             ->setUsername('robert3paul')
-            ->setPassword($config['mailPassword']);
+            ->setPassword($config->get('mailPassword'));
 
         $mailer = new \Swift_Mailer($transport);
 // Create a message
