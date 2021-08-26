@@ -2,11 +2,14 @@
 
 namespace App\Core;
 
+use App\Exceptions\MyExceptionHandler;
+
 class Application
 {
     protected $router;
     protected $config;
     protected $sessionHandler;
+    protected $exceptionHandler;
 
     public function __construct()
     {
@@ -17,8 +20,8 @@ class Application
 
     private function setExceptionHandler()
     {
-        $exceptionHandler = new ExceptionHandler();
-        @set_exception_handler(array($exceptionHandler, 'handle'));
+        $this->exceptionHandler = new MyExceptionHandler();
+        @set_exception_handler(array($this->exceptionHandler, 'handle'));
     }
 
     private function loadRoutes()
@@ -33,6 +36,7 @@ class Application
 
     public function handle(Request $request)
     {
+        $this->exceptionHandler->setHeaders($request->getHeaders());
         $uri = $request->getServerParams()['REQUEST_URI'];
         $method = $request->getServerParams()['REQUEST_METHOD'];
 
