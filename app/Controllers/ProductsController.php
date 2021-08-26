@@ -4,27 +4,30 @@ namespace App\Controllers;
 
 use App\Cart\Cart;
 use App\DAL\DBConnection;
+use App\Core\Session;
 
 require_once basePath() . '/vendor/autoload.php';
-require_once basePath() . '/App/Cart/Cart.php';
 
 class ProductsController extends BaseController
 {
     private $cart;
+    private $session;
 
     public function __construct()
     {
         parent::__construct();
         $this->cart = new Cart();
+        $this->session = new Session();
     }
 
-    private function getProducts() {
+    private function getProducts()
+    {
         $conn = getConnection();
         $query = "SELECT * FROM `products`";
         $result = $conn->query($query);
         $products = [];
         if ($result->num_rows > 0) {
-            while($product = $result->fetch_assoc()) {
+            while ($product = $result->fetch_assoc()) {
                 $products[] = $product;
             }
         }
@@ -32,13 +35,14 @@ class ProductsController extends BaseController
         return $products;
     }
 
-    public function showProducts() {
-        session_start();
+    public function showProducts()
+    {
         $products = $this->getProducts();
 
-        if (isset($_REQUEST['column']) && isset($_SESSION['columns'])) {
+        if (isset($_REQUEST['column']) && $this->session->isSet('columns')) {
             usort($products, function ($p1, $p2) {
-                $directionSort = $_SESSION['columns'][$_REQUEST['column']] == 'asc' ? -1 : 1;
+                $columns = $this->session->get('columns');
+                $directionSort = $columns[$_REQUEST['column']] == 'asc' ? -1 : 1;
                 if ($p1[$_REQUEST['column']] < $p2[$_REQUEST['column']]) return $directionSort;
 
                 return -1 * $directionSort;
@@ -47,36 +51,42 @@ class ProductsController extends BaseController
         $this->bladeResponse(array('products' => $products), 'products/table');
     }
 
-    public function addProduct() {
+    public function addProduct()
+    {
         $this->cart->addProduct();
 
-        echo json_encode($_SESSION['cartProducts']);
+        echo json_encode($this->session->get('cartProducts'));
         exit();
     }
 
-    public function showCart() {
+    public function showCart()
+    {
         $products = $this->cart->getProducts();
         if ($products) {
             $this->bladeResponse(array('products' => $products), 'products/cart');
         }
     }
 
-    public function updateCart() {
+    public function updateCart()
+    {
         $this->cart->updateCart();
         $this->showCart();
     }
 
-    public function removeCartProduct() {
+    public function removeCartProduct()
+    {
         $this->cart->removeProduct();
         $this->showCart();
     }
 
-    public function validateBuyer() {
+    public function validateBuyer()
+    {
         //some validation
         $this->proceed();
     }
 
-    private function sendEmail($body) {
+    private function sendEmail($body)
+    {
         global $config;
 
         $transport = (new \Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl'))
@@ -87,13 +97,12 @@ class ProductsController extends BaseController
         // Create a message
         $message = (new \Swift_Message('First email'))
             ->setFrom(['robert3paul@gmail.com' => 'Robert Gherghel'])
-            ->setTo($_SESSION['user']['email'])
+            ->setTo($this->session->get('user')['email'])
             ->setBody($body);
         // Send the message
         try {
             $result = $mailer->send($message);
-        }
-        catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             var_dump($exception->getMessage());
         }
     }
@@ -124,7 +133,7 @@ class ProductsController extends BaseController
         $orderID = 0;
 
         if ($result) {
-            $orderID = $dbConnection->insert_id;
+            $orderID = $dbConnection->getConnection()->insert_id;
         }
 
         foreach ($cartProducts as $orderItem) {
@@ -138,8 +147,7 @@ class ProductsController extends BaseController
         }
         $this->sendEmail("Order placed successfully");
 
-        session_start();
-        unset($_SESSION['cartProducts']);
+        $this->session->forget('cartProducts');
     }
 
 

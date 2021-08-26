@@ -50,4 +50,14 @@ class Training
     {
         return $this->hidden;
     }
+
+    public function __sleep(): array
+    {
+        return ['data', 'declared'];
+    }
+
+    public function __wakeup(): void
+    {
+        echo 'HOLA, I\'M DESERIALIZING:   ';
+    }
 }

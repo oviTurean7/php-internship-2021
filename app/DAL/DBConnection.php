@@ -48,4 +48,12 @@ class DBConnection {
     {
         return $this->connection->query($query);
     }
+
+    /**
+     * @return \mysqli|void
+     */
+    public function getConnection(): \mysqli
+    {
+        return $this->connection;
+    }
 }
