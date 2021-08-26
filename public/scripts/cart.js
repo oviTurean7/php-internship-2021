@@ -109,6 +109,7 @@ $(document).ready(function () {
 
         }
         else {
+
             $('#submitError').removeClass("d-none");
         }
     })
@@ -129,11 +130,13 @@ function placeOrder (formData) {
 
             console.log(data);
             emptyCart();
-            //window.location.replace("http://php.local/");
+            window.location.replace("http://php.local/");
         },
         error: function(msg) {
-            console.log("error");
-            console.log(msg);
+            console.log("eor");
+            console.log(msg.responseText);
+            $('#submitError').children(0).text(msg.responseText);
+            $('#submitError').removeClass("d-none");
         }
     });
 }

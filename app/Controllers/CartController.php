@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Repositories\Cart;
 use App\Repositories\Products;
+use App\Validators\Validator;
 use Exception;
 
 
@@ -21,12 +22,15 @@ class CartController extends BaseController
             //var_dump($_SESSION['cart']);
 
         } else {
+
+            $final = ["error" => "The id needs to be a number", "code" => 400];
+            echo json_encode($final);
             throw new Exception("The id needs to be a number");
         }
         if (isset($_COOKIE['date'])) {
             var_dump($_COOKIE['date']);
         }
-        $final = ['items' => $_SESSION['cart']->getNumberOfItems(), "price" => $_SESSION['cart']->getTotalPrice()];
+        $final = ['items' => $_SESSION['cart']->getNumberOfItems(), "price" => $_SESSION['cart']->getTotalPrice(), "code" => 200];
         //var_dump($_SESSION['cart']->getTotalPrice());
         echo json_encode($final);
     }
@@ -73,6 +77,24 @@ class CartController extends BaseController
     }
 
     public function placeOrder() {
+        $rules = [];
+        foreach ($_POST as $key => $item) {
+            if ($key === 'email')
+            {
+                $rules[$key] = 'email';
+            }
+            else
+            {
+                $rules[$key] = 'required';
+            }
+        }
+        $validator = new Validator($rules, $_POST, []);
+        if($validator->evaluate() === false)
+        {
+            echo implode (", ", $validator->getErrors());
+            http_response_code(404);
+            return;
+        }
         $file_path = uploadsPath() . '/' . $_FILES['file']['name'];
         var_dump( $file_path);
         FileController::add();

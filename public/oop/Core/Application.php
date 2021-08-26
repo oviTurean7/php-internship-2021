@@ -1,6 +1,6 @@
 <?php
 
-namespace  Oop\Core;
+namespace Oop\Core;
 
 class Application
 {
@@ -23,12 +23,12 @@ class Application
 
     private function loadRoutes()
     {
-        $this->router = require __DIR__.'/../routes.php';
+        $this->router = require __DIR__ . '/../routes.php';
     }
 
     private function loadConfig()
     {
-        $this->config = require __DIR__.'/../../config.php';
+        $this->config = require __DIR__ . '/../../../config.php';
     }
 
     public function handle(Request $request)
@@ -56,10 +56,10 @@ class Application
 
         if (is_callable($action)) {
             return call_user_func($action, ...$parameters);
-        } elseif(is_string($action) && strpos($action, '@') !== false) {
+        } elseif (is_string($action) && strpos($action, '@') !== false) {
             list($controllerClass, $method) = explode('@', $action);
 
-            $controllerClass = 'App\Controllers\\'.$controllerClass;
+            $controllerClass = 'Oop\Controllers\\' . $controllerClass;
 
             $controllerObject = new $controllerClass();
             $controllerObject->setRequest($request);
@@ -77,7 +77,7 @@ class Application
         //filter classes should be UserFilter, AdminFilter and should have a method handle, that throws an exception if
         //the user doesn't have the necessary permissions
         foreach ($route['filters'] as $filter) {
-            $className = 'App\Filters\\'.ucfirst($filter).'Filter';
+            $className = 'Oop\Filters\\' . ucfirst($filter) . 'Filter';
             $instance = new $className();
             $instance->handle();
         }

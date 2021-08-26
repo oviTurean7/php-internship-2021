@@ -1,47 +1,27 @@
 <?php
 
-use Oop\Core\Application;
-use Oop\Core\Request;
+
 
 require_once '../../vendor/autoload.php';
 //include_once 'routes.php';
-include "./Training.php";
 
-$training = new Training();
+use Oop\Core\Application;
+use Oop\Core\Request;
 
-$training->name = "Ioana";
-echo $training->name;
-echo "<br>";
-echo isset($training->name);
-echo "<br>";
- unset($training->name);
-echo "<br>";
-$training->test();
-echo "<br>";
-Training::testStatic();
-echo "<br>";
-echo $training;
-echo "<br>";
-var_export($training);
-echo "<br>";
-var_dump($training);
-echo "<br>";
-$training("Ioana");
-echo "<br>";
-echo __LINE__;
-echo "<br>";
-echo __FILE__;
-echo "<br>";
-echo __DIR__;
-echo "<br>";
-$training->use();
-echo "<br>";
-$training->className();
-echo "<br>";
-$training->method();
-echo "<br>";
-$training->namespace();
-echo "<br>";
-echo Training::class;
-echo "<br>";
+function myError($errorNumber, $errorText) {
+    echo "<b>Error</b> $errorNumber: $errorText";
+}
 
+set_error_handler("myError");
+
+error_reporting(-1);
+ini_set("error_log", "errors.php");
+//trigger_error("I am triggered");
+//throw new Exception("excuuuuseee me"); /* nope */
+
+
+$request = new Request();
+
+$app = new Application();
+
+$app->handle($request);

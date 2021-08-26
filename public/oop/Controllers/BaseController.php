@@ -1,6 +1,5 @@
 <?php
-
-namespace App\Controllers;
+namespace Oop\Controllers;
 
 use Jenssegers\Blade\Blade;
 

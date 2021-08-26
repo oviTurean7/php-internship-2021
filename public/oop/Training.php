@@ -9,7 +9,7 @@
 __invoke
 • __set_state, __debugInfo
  */
-
+namespace Oop;
 
 class Training
 {

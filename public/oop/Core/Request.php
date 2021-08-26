@@ -1,18 +1,19 @@
 <?php
 
-namespace  Oop\Core;
-
+namespace Oop\Core;
 class Request
 {
     protected $parameters;
     protected $headers;
     protected $files;
+    protected $serverParams;
 
     public function __construct()
     {
         $this->determineHeaders();
         $this->determineParameters();
         $this->determineFiles();
+        $this->setServerParameters();
     }
 
     protected function determineParameters()
@@ -24,7 +25,23 @@ class Request
         }
     }
 
+    protected function setServerParameters()
+    {
+        $this->serverParams = $_SERVER;
+    }
 
+    public function needsJson()
+    {
+        if (isset($this->headers['X-REQUESTED-WITH']) && $this->headers['X-REQUESTED-WITH'] === 'XMLHttpRequest') {
+            return true;
+        }
+
+        if (isset($this->headers['ACCEPT']) && strpos($this->headers['ACCEPT'], 'json') !== false) {
+            return true;
+        }
+
+        return false;
+    }
 
     protected function determineHeaders()
     {
@@ -123,5 +140,19 @@ class Request
         $this->files = $files;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getServerParams()
+    {
+        return $this->serverParams;
+    }
 
+    /**
+     * @param mixed $serverParams
+     */
+    public function setServerParams($serverParams)
+    {
+        $this->serverParams = $serverParams;
+    }
 }

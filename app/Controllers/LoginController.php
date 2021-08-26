@@ -2,8 +2,10 @@
 
 namespace App\Controllers;
 
+use App\Exceptions\TestException;
 use App\Repositories\Cart;
 use App\Repositories\Products;
+use App\Validators\Validator;
 use Error;
 use Exception;
 
@@ -11,19 +13,67 @@ use Exception;
 class LoginController extends BaseController
 {
 
+
     /**
      * @throws Exception
      */
     public function login() {
-        $email = $_POST['email'];
+
+
+        /*
+
+        set_exception_handler(function ($exception) {
+            $msg = $exception->getMessage();
+            echo "You have reached me: $msg";
+            http_response_code(404);
+           var_dump( error_log("$msg"));
+        }); // no, it is not reached at 9, but it is reached at 10
+
+
+
+        /*
         $pattern = '/(.+@.+\..+)/';
-        $subject = 'a@m.c';
-        $res = preg_match($pattern, $subject);
+        $res = preg_match($pattern, $email);
+
         if ($res === 0) {
-                echo 'Incorrect email format';
-                http_response_code(404);
-                return;
+            throw new TestException('Incorrect email format');
+
+        }*/
+
+        /*
+        try {
+
         }
+        catch (Exception $ex) {
+            echo "General exception: " . $ex->getMessage();
+            http_response_code(404);
+            return;
+        } /* the first one, it goes to the first one that matches.
+        catch (TestException $ex) {
+            echo $ex->getMessage();
+            http_response_code(404);
+            return;
+        }
+    */
+        $rules = [];
+        foreach ($_POST as $key => $item) {
+            if ($key === 'email')
+            {
+                $rules[$key] = 'email';
+            }
+            else
+            {
+                $rules[$key] = 'required';
+            }
+        }
+        $validator = new Validator($rules, $_POST, []);
+        if($validator->evaluate() === false)
+        {
+            echo implode (", ", $validator->getErrors());
+            http_response_code(404);
+            return;
+        }
+        $email = $_POST['email'];
         $password = md5($_POST['password']);
         global $db;
         global $conn;

@@ -120,14 +120,15 @@ $(".radioSort").click(function () {
        data: {
            column: dataChecked.val()
        },
-       datatype: "json",
-       success: function(data){
+
+       success: function(){
            console.log("success");
            console.log(dataChecked.attr('id'));
 
            sessionStorage.setItem("checkbox", dataChecked.attr('id'));
 
-            window.location.reload();
+          // window.location.reload();
+           $('.row').load(document.URL +  ' .row');
 
        },
        error: function(msg) {

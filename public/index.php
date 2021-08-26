@@ -13,6 +13,7 @@ if (!isset($_SESSION['logged'])) {
 }
 
 
+
 $request = new App\Core\Request();
 
 $app = new App\Core\Application();

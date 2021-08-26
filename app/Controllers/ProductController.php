@@ -7,10 +7,14 @@ use App\Repositories\Products;
 class ProductController extends BaseController
 {
     public function sortColumn() {
+//        var_dump($_REQUEST);
+//        echo json_decode($_POST['column']);
+//        echo 'ddddddddddddddddddddddaaaaaaaaaaaaaa';
         $_SESSION['column'] = $_POST['column'];
         if (isset($_COOKIE['date'])) {
             var_dump( $_COOKIE['date']);
         }
+
         //echo $_POST['column'];
     }
 

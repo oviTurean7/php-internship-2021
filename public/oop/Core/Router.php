@@ -1,6 +1,6 @@
 <?php
 
-namespace  Oop\Core;
+namespace Oop\Core;
 
 class Router
 {
@@ -100,10 +100,10 @@ class Router
         $comparingRouteParts = explode('/', $targetRoute);
 
         if (count($routeParts) !== count($comparingRouteParts)) {
-        return false;
+            return false;
         }
 
-        if (count(array_intersect($routeParts, explode('/', $targetRoute2))) == count($routeParts)){
+        if (count(array_intersect($routeParts, explode('/', $targetRoute2))) == count($routeParts)) {
             for ($index = 0; $index < count($routeParts); $index++) {
                 $routePart = $routeParts[$index];
                 $comparingRoutePart = $comparingRouteParts[$index];
@@ -126,11 +126,9 @@ class Router
                     return false;
                 }
             }
-        }
-        else {
+        } else {
             return false;
         }
-
 
 
         return true;

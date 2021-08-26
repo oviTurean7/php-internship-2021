@@ -50,7 +50,7 @@
                         <div class="col-6">
                             <!-- Email address input-->
                             <div class="form-group">
-                                <input class="form-control" id="lastName" type="text" placeholder="Your Last Name *" data-sb-validations="required" required
+                                <input class="form-control" id="lastName" type="text" placeholder="Your Last Name *" data-sb-validations="required"
                                        oninvalid="this.setCustomValidity('Last name is required.')"
                                        oninput="setCustomValidity('')"/>
                             </div>

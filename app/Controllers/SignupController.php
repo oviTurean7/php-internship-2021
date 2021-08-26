@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Controllers;
+use App\Validators\Validator;
+use Exception;
 use Swift_Mailer;
 use Swift_Message;
 use Swift_SmtpTransport;
@@ -33,22 +35,35 @@ class SignupController extends BaseController
     public function signup() {
         global $db;
         global $conn;
-        $email = $_POST['email'];
-        $pattern = '/(.+@.+\..+)/';
-        $subject = 'a@m.c';
-        $res = preg_match($pattern, $subject);
-        if ($res === 0) {
-            echo 'Incorrect email format';
+        $rules = [];
+        foreach ($_POST as $key => $item) {
+            if ($key === 'email')
+            {
+                $rules[$key] = 'email';
+            }
+            else
+            {
+                $rules[$key] = 'required';
+            }
+        }
+        $validator = new Validator($rules, $_POST, []);
+        if($validator->evaluate() === false)
+        {
+            echo implode (", ", $validator->getErrors());
             http_response_code(404);
             return;
         }
+        $email = $_POST['email'];
+
         $sql = "SELECT email, password FROM users WHERE email =  '$email'";
         //echo $sql . "\n";
 
         $result = $conn->query($sql);
         if ($result->num_rows !== 0) {
-            echo 'Email already in the database';
+            //echo 'Email already in the database';
+
             http_response_code(404);
+            throw new Exception('Email already in the database');
             return;
         }
 
