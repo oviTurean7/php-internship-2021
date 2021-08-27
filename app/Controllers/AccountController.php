@@ -5,14 +5,14 @@ namespace App\Controllers;
 use App\Core\Config;
 use App\DAL\DBConnection;
 use App\Core\Session;
-use Illuminate\Support\Facades\Validator;
+use App\Validations\InputValidator;
 
 require_once basePath() . '/vendor/autoload.php';
 
 class AccountController extends BaseController
 {
     private $rules = [FILTER_VALIDATE_EMAIL];
-    private $messages = ["emailError" => "invalid email format"];
+    private $messages = ["emailError" => ["invalid email format", "email incorrect"]];
 
     public function showLoginForm()
     {
@@ -33,10 +33,10 @@ class AccountController extends BaseController
 
     public function checkLoginData()
     {
-        $validator = new Validator();
-        $validatorMessage = $validator->validate($this->rules, $_REQUEST, $this->messages);
+        $validator = new InputValidator();
+        $validatorResponse = $validator->validate($this->rules, $_REQUEST, $this->messages);
 
-        if (isset($_REQUEST['email']) && $validatorMessage === true) {
+        if (isset($_REQUEST['email']) && $validatorResponse) {
             $email = $_REQUEST['email'];
             $password = $_REQUEST['password'];
             $query = "SELECT `email`, `password`, `confirmed`, `token` from `users` WHERE strcmp(`email`,'$email') = 0";
@@ -53,7 +53,13 @@ class AccountController extends BaseController
                 die(json_encode(array('message' => 'Error', 'code' => 404)));
             }
         } else {
-            die(json_encode(array('message' => $validatorMessage)));
+            $message = '';
+            foreach ($validator->getErrors() as $errors) {
+                foreach ($errors as $error) {
+                    $message .= $error . '</br>';
+                }
+            }
+            die(json_encode(array('message' => $message)));
         }
     }
 
@@ -123,12 +129,19 @@ class AccountController extends BaseController
     public function checkRegisterData()
     {
         if (isset($_REQUEST['email']) && strlen($_REQUEST['email']) > 5 && isset($_REQUEST['password']) && strlen($_REQUEST['password']) > 3 && isset($_REQUEST['fname']) && strlen($_REQUEST['fname']) >= 2 && isset($_REQUEST['lname']) && strlen($_REQUEST['lname']) >= 2 && isset($_REQUEST['address']) && strlen($_REQUEST['address']) >= 3) {
-            $validator = new Validator();
-            $validatorMessage = $validator->validate($this->rules, $_REQUEST, $this->messages);
-            if ($validatorMessage === true)
+            $validator = new InputValidator();
+            $validatorResponse = $validator->validate($this->rules, $_REQUEST, $this->messages);
+            if ($validatorResponse)
                 $this->register($_REQUEST['email'], $_REQUEST['password'], $_REQUEST['fname'], $_REQUEST['lname'], $_REQUEST['address']);
-            else
-                echo $validatorMessage;
+            else {
+                $message = '';
+                foreach ($validator->getErrors() as $errors) {
+                    foreach ($errors as $error) {
+                        $message .= $error . '</br>';
+                    }
+                }
+                die(json_encode(array('message' => $message)));
+            }
         }
     }
 

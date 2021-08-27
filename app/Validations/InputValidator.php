@@ -4,11 +4,13 @@ namespace App\Validations;
 
 class InputValidator
 {
+    private $errorMessages;
     public function validate($rules, $request, $messages)
     {
         foreach ($rules as $rule) {
             if(!filter_var($request['email'], $rule)) {
-                return $messages['emailError'];
+                $this->errorMessages[] = $messages['emailError'];
+                return false;
             }
         }
 
@@ -17,6 +19,6 @@ class InputValidator
 
     public function getErrors()
     {
-
+        return $this->errorMessages;
     }
 }
