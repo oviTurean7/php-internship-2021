@@ -5,11 +5,15 @@ namespace App\Controllers;
 use App\Core\Config;
 use App\DAL\DBConnection;
 use App\Core\Session;
+use Illuminate\Support\Facades\Validator;
 
 require_once basePath() . '/vendor/autoload.php';
 
 class AccountController extends BaseController
 {
+    private $rules = [FILTER_VALIDATE_EMAIL];
+    private $messages = ["emailError" => "invalid email format"];
+
     public function showLoginForm()
     {
         $this->bladeResponse([], '/account/login');
@@ -29,10 +33,12 @@ class AccountController extends BaseController
 
     public function checkLoginData()
     {
-        if (isset($_REQUEST['email'])) {
+        $validator = new Validator();
+        $validatorMessage = $validator->validate($this->rules, $_REQUEST, $this->messages);
+
+        if (isset($_REQUEST['email']) && $validatorMessage === true) {
             $email = $_REQUEST['email'];
             $password = $_REQUEST['password'];
-
             $query = "SELECT `email`, `password`, `confirmed`, `token` from `users` WHERE strcmp(`email`,'$email') = 0";
             $dbConnection = new DBConnection();
             $result = $dbConnection->getSingleData($query);
@@ -47,7 +53,7 @@ class AccountController extends BaseController
                 die(json_encode(array('message' => 'Error', 'code' => 404)));
             }
         } else {
-            die(json_encode(array('message' => 'Error', 'code' => 404)));
+            die(json_encode(array('message' => $validatorMessage)));
         }
     }
 
@@ -73,12 +79,12 @@ class AccountController extends BaseController
             ->setPassword($config->get('mailPassword'));
 
         $mailer = new \Swift_Mailer($transport);
-// Create a message
+        // Create a message
         $message = (new \Swift_Message('First email'))
             ->setFrom(['robert3paul@gmail.com' => 'Robert Gherghel'])
             ->setTo([$email])
             ->setBody("Confirmation link: http://internship.local/confirm?token=$token");
-// Send the message
+        // Send the message
         try {
             $result = $mailer->send($message);
         } catch (\Exception $exception) {
@@ -117,7 +123,12 @@ class AccountController extends BaseController
     public function checkRegisterData()
     {
         if (isset($_REQUEST['email']) && strlen($_REQUEST['email']) > 5 && isset($_REQUEST['password']) && strlen($_REQUEST['password']) > 3 && isset($_REQUEST['fname']) && strlen($_REQUEST['fname']) >= 2 && isset($_REQUEST['lname']) && strlen($_REQUEST['lname']) >= 2 && isset($_REQUEST['address']) && strlen($_REQUEST['address']) >= 3) {
-            $this->register($_REQUEST['email'], $_REQUEST['password'], $_REQUEST['fname'], $_REQUEST['lname'], $_REQUEST['address']);
+            $validator = new Validator();
+            $validatorMessage = $validator->validate($this->rules, $_REQUEST, $this->messages);
+            if ($validatorMessage === true)
+                $this->register($_REQUEST['email'], $_REQUEST['password'], $_REQUEST['fname'], $_REQUEST['lname'], $_REQUEST['address']);
+            else
+                echo $validatorMessage;
         }
     }
 
