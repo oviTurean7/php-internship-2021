@@ -19,24 +19,20 @@ $(document).ready(function () {
         toggleArrow(params.column, params.operation);
     }
 
-    $('.cart-form').on('submit', function (e) {
-        // const elemIDs = ['#fname', '#lname', '#email', '#address']
-        // let isValid = 0
-        // elemIDs.forEach(id => {
-        //     console.log($(id))
-        //     if ($(id).val().length > 0) {
-        //         $(id).removeClass('form-input')
-        //         isValid++
-        //     }
-        //     else $(id).addClass('form-input')
-        // })
-        //
-        // console.log(isValid)
-        // if (isValid !== elemIDs.length) {
-        //     e.preventDefault();
-        //     alert('NOT VALID FORM');
-        // }
-    })
+    // let table = $('#categories').DataTable({
+    //     ajax: '/categories'
+    // });
+
+    let table = $('#categories').DataTable({
+        ajax: '/categories',
+    });
+    var Editor = $.fn.dataTable.Editor;
+    console.log(Editor)
+    let editor = table.editor;
+
+    table.on( 'click', 'tbody td:not(:first-child)', function (e) {
+        editor.inline( this );
+    } );
 });
 
 function addToCart(product) {

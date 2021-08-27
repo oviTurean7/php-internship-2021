@@ -33,6 +33,12 @@ function getDbConfig()
     return require 'config-db.php';
 }
 
+function getDatatablesConfig()
+{
+    $dtConfig = require 'config-db.php';
+    return $dtConfig['datatablesDB'];
+}
+
 function getConnection()
 {
     $config_db = getDbConfig();
