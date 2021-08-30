@@ -25,6 +25,6 @@ $router->get('/register', 'AccountController@checkRegisterData');
 $router->get('/confirm', 'AccountController@confirmMail');
 $router->get('/root-categories', 'CategoryController@root');
 $router->get('/categories', 'CategoryController@index');
-$router->get('/categories/editor', 'CategoryController@editorIndex');
+$router->post('/categories/editor', 'CategoryController@editorIndex');
 
 return $router;

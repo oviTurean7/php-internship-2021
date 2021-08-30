@@ -17,17 +17,23 @@ class CategoryController extends BaseController implements ResourceControllerInt
 
     public function index()
     {
-        $dt = new Datatables(new MySQL(getDatatablesConfig()));
-        $dt->query("SELECT id, name, briefing FROM category");
-
-        echo $dt->generate();
-    }
-
-    public function editorIndex() {
         $conn = new DBConnection();
         $result = $conn->getData("SELECT id, name, briefing FROM category");
 
         echo '{"data": ' . json_encode($result) . '}';
+    }
+
+    public function editorIndex()
+    {
+        if (isset($_POST['data'])) {
+            $conn = new DBConnection();
+            $id = array_keys($_POST['data'])[0];
+            $name = $_POST['data'][$id]['name'];
+            $briefing = $_POST['data'][$id]['briefing'];
+
+            $query = "UPDATE `category` SET `name`='$name', `briefing`='$briefing' WHERE `id`=$id";
+            $conn->updateData($query);
+        }
     }
 
     public function show($id)
@@ -48,7 +54,7 @@ class CategoryController extends BaseController implements ResourceControllerInt
     public function edit($id)
     {
         $dt = new Datatables(new MySQL(getDatatablesConfig()));
-        $dt->edit('name', function($data){
+        $dt->edit('name', function ($data) {
             return $data['name'] . 'X';
         });
     }

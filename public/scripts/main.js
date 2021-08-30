@@ -20,7 +20,7 @@ $(document).ready(function () {
     }
 
     let editor = new $.fn.dataTable.Editor({
-        ajax: 'data/objects.txt',
+        ajax: '/categories/editor',
         table: "#categories",
         idSrc: "id",
         fields: [ {
@@ -35,7 +35,7 @@ $(document).ready(function () {
 
     $('#categories').DataTable({
         "serverSide": false,
-        "ajax": '/categories/editor',
+        "ajax": '/categories',
         "select": true,
         "columns": [
             { "data": "id" },
@@ -47,7 +47,7 @@ $(document).ready(function () {
     $('#categories').on( 'click', 'tbody tr', function () {
         editor.edit(this, {
             title: 'Edit record',
-            buttons: 'Update'
+            buttons: 'Update',
         });
     })
 });
