@@ -25,7 +25,19 @@ class CategoryController extends BaseController implements ResourceControllerInt
 
     public function editorIndex()
     {
-        if (isset($_POST['data'])) {
+        var_dump($_REQUEST);
+        if (isset($_REQUEST) && $_REQUEST['action'] == "create") {
+            $conn = new DBConnection();
+            $name = $_POST['data'][0]['name'];
+            $briefing = $_POST['data'][0]['briefing'];
+            $conn->insertData("INSERT INTO `category`(`name`, `briefing`) VALUES('$name', '$briefing')");
+        }
+        elseif (isset($_REQUEST) && $_REQUEST['action'] == "remove") {
+            $conn = new DBConnection();
+            $id = array_keys($_POST['data'])[0];
+            $conn->deleteData('category', $id);
+        }
+        elseif (isset($_POST['data'])) {
             $conn = new DBConnection();
             $id = array_keys($_POST['data'])[0];
             $name = $_POST['data'][$id]['name'];

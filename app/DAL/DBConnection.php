@@ -2,7 +2,8 @@
 
 namespace App\DAL;
 
-class DBConnection {
+class DBConnection
+{
 
     private $connection;
 
@@ -16,7 +17,7 @@ class DBConnection {
         $result = $this->connection->query($query);
         $rows = [];
         if ($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
+            while ($row = $result->fetch_assoc()) {
                 $rows[] = $row;
             }
         }
@@ -47,6 +48,11 @@ class DBConnection {
     public function updateData($query)
     {
         return $this->connection->query($query);
+    }
+
+    public function deleteData($table, $id)
+    {
+        $this->connection->query("DELETE FROM '$table' WHERE `id`=$id");
     }
 
     /**

@@ -34,22 +34,37 @@ $(document).ready(function () {
     });
 
     $('#categories').DataTable({
+        "dom": 'Bfrtip',
         "serverSide": false,
         "ajax": '/categories',
         "select": true,
         "columns": [
             { "data": "id" },
             { "data": "name" },
-            { "data": "briefing" }
+            { "data": "briefing" },
+        ],
+        buttons: [
+            { extend: "create", editor: editor },
+            { extend: "edit",   editor: editor },
+            {
+                extend: "remove",
+                editor: editor,
+                formMessage: function ( e, dt ) {
+                    var rows = dt.rows( e.modifier() ).data().pluck('name');
+                    return 'Are you sure you want to delete the entries for the '+
+                        'following record(s)? <ul><li>'+rows.join('</li><li>')+'</li></ul>';
+                }
+            }
         ]
     });
 
-    $('#categories').on( 'click', 'tbody tr', function () {
-        editor.edit(this, {
-            title: 'Edit record',
-            buttons: 'Update',
-        });
-    })
+    // $('#categories').on( 'click', 'tbody tr', function () {
+    //     editor.edit(this, {
+    //         title: 'Edit record',
+    //         buttons: 'Update',
+    //         submit: 'allIfChanged'
+    //     });
+    // })
 });
 
 function addToCart(product) {
