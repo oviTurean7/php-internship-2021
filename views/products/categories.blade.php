@@ -10,8 +10,6 @@
                 <th>Briefing</th>
             </tr>
         </thead>
-        <tbody>
-        </tbody>
     </table>
 
 @endsection

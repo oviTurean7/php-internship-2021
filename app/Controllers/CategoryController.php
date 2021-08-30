@@ -23,6 +23,13 @@ class CategoryController extends BaseController implements ResourceControllerInt
         echo $dt->generate();
     }
 
+    public function editorIndex() {
+        $conn = new DBConnection();
+        $result = $conn->getData("SELECT id, name, briefing FROM category");
+
+        echo '{"data": ' . json_encode($result) . '}';
+    }
+
     public function show($id)
     {
         // TODO: Implement show() method.

@@ -19,20 +19,37 @@ $(document).ready(function () {
         toggleArrow(params.column, params.operation);
     }
 
-    // let table = $('#categories').DataTable({
-    //     ajax: '/categories'
-    // });
-
-    let table = $('#categories').DataTable({
-        ajax: '/categories',
+    let editor = new $.fn.dataTable.Editor({
+        ajax: 'data/objects.txt',
+        table: "#categories",
+        idSrc: "id",
+        fields: [ {
+            label: "Name:",
+            name: "name"
+        }, {
+            label: "Briefing:",
+            name: "briefing"
+        }
+        ]
     });
-    var Editor = $.fn.dataTable.Editor;
-    console.log(Editor)
-    let editor = table.editor;
 
-    table.on( 'click', 'tbody td:not(:first-child)', function (e) {
-        editor.inline( this );
-    } );
+    $('#categories').DataTable({
+        "serverSide": false,
+        "ajax": '/categories/editor',
+        "select": true,
+        "columns": [
+            { "data": "id" },
+            { "data": "name" },
+            { "data": "briefing" }
+        ]
+    });
+
+    $('#categories').on( 'click', 'tbody tr', function () {
+        editor.edit(this, {
+            title: 'Edit record',
+            buttons: 'Update'
+        });
+    })
 });
 
 function addToCart(product) {
