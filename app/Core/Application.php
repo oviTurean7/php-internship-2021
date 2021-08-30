@@ -68,9 +68,9 @@ class Application
             return call_user_func([$controllerObject, $method], ...$parameters);
         }
 
-        //TODO - after presentation 4, throw an Exception here
-        echo 'Wrong route definition';
-        die();
+
+        throw new Exceptions\RouteException('Wrong route definition');
+        //die();
     }
 
     private function filterRoute($route)

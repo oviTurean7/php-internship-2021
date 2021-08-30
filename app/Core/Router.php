@@ -2,6 +2,8 @@
 
 namespace App\Core;
 
+use App\Exceptions\RouteException;
+
 class Router
 {
     protected $routes;
@@ -16,9 +18,8 @@ class Router
     public function __call($method, $args)
     {
         if (count($args) != 2) {
-            //TODO - after presentation 4, throw an Exception here
-            echo 'Invalid route definition';
-            die();
+            throw new RouteException('Invalid route definition');
+
         }
 
         $this->routes[] = ['method' => $method, 'name' => $args[0], 'action' => $args[1]];
@@ -63,10 +64,9 @@ class Router
                 }
             }
 
-            //TODO - after presentation 4, throw an Exception here
+            throw new RouteException('Route / is not defined');
 
-            echo 'Route / is not defined';
-            die();
+
         }
 
         foreach ($this->routes as $route) {
@@ -79,10 +79,8 @@ class Router
             }
         }
 
-        //TODO - after presentation 4, throw an Exception here
 
-        echo 'Invalid route, or has another http verb';
-        die();
+        throw new RouteException('Invalid route, or has another http verb');
     }
 
     protected function checkRouteMatch($path, $method, $route)
@@ -95,7 +93,7 @@ class Router
         $routeParts = explode('/', $path);
         $targetRoute = trim($route['name'], '/');
 
-        $targetRoute2 = (strpos($targetRoute, '?') !== false) ? strstr($targetRoute, '?', true) : $targetRoute;
+        $targetRoute2 = (strpos($targetRoute, '?') !== false) ? strstr($targetRoute, '?', true) : $path;
 
         $comparingRouteParts = explode('/', $targetRoute);
 
@@ -112,7 +110,7 @@ class Router
                 $closeBrace = strpos($comparingRoutePart, '}');
                 if ($openBrace !== false && $closeBrace !== false && $openBrace < $closeBrace) {
                     //if the compared route contains {something} this matches anything
-                    //TODO - here we should fill the parameters for the controller after oop course 5
+
                     $this->parameters[] = $routePart;
                     continue;
                 }

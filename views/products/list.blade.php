@@ -73,7 +73,7 @@
             </div>
         </div>
     </div>
-    <script src="{{scriptUrl('LIST.js')}}"></script>
+    <script src="{{scriptUrl('list.js')}}"></script>
     @include('layout.footer')
 @endsection
 

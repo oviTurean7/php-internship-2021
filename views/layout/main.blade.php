@@ -15,9 +15,12 @@
     <!-- Google fonts-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css"/>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css"/>
+    <link href="//cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <!-- Latest compiled and minified CSS -->
     <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
     <!-- Latest compiled JavaScript -->
 
@@ -26,8 +29,11 @@
     @yield('additional-css')
 </head>
 <body>
+
+
+<script src="//cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script>
+
 @yield('content')
-<script src="{{scriptUrl('jquery-3.4.1.js')}}"></script>
 <script src="{{scriptUrl('main.js')}}"></script>
 @yield('additional-scripts')
 
