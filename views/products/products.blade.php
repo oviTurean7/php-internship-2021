@@ -17,7 +17,25 @@
 
                 </table>
             </div>
+            <form id="importForm" class="mt-5" data-sb-form-api-token="API_TOKEN">
 
+                <div class="row align-items-stretch mb-5">
+                    <div class="form-group">
+
+                        <input class="form-control" id="importFile" type="file" placeholder="Your Name *" data-sb-validations="required" required/>
+                    </div>
+                </div>
+                <div class="d-none" id="submitSuccessMessageInput">
+                    <div class="text-center text-black mb-3">
+                        <div class="fw-bolder">File submission successful!</div>
+
+                    </div>
+                </div>
+
+                <div class="d-none" id="submitErrorMessageInput"><div class="text-center text-danger mb-3">Error sending message!</div></div>
+                <!-- Submit Button-->
+                <div class="text-center"><button class="btn btn-primary btn-xl text-uppercase " id="importFileButton" type="submit">Import products</button></div>
+            </form>
         </div>
     </section>
     <div class="modal-container">

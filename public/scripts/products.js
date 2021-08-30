@@ -158,7 +158,34 @@ function addProduct() {
         // alert("aaaaaaaaaaaaaaa");
         getCategories();
 
+        $("#importForm").submit(function (event) {
+            event.preventDefault();
+            let file = $("#importFile").prop('files')[0];
+            let formData = new FormData();
+            formData.append('file', file);
+            if (file) {
 
+                $.ajax({
+                    type: "POST",
+                    url: '/products/import',
+                    dataType: 'text',  // <-- what to expect back from the PHP script, if anything
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    success: function(data){
+                        console.log("success " + data);
+                        $('#submitSuccessMessageInput').removeClass('d-none');
+                        $('#submitErrorMessageInput').add('d-none');
+                    },
+                    error: function (message) {
+                        console.log(message.responseText);
+                        $('#submitErrorMessageInput').children(0).text(message.responseText);
+                        $('#submitErrorMessageInput').removeClass('d-none');
+                    }
+                })
+            }
+        });
 
 
     });
@@ -199,6 +226,19 @@ function populateTable() {
 
     });
 
-    $('.products').append(`<button onclick="addProduct()" id="add" type="button" class="add-button btn btn-primary btn-lg text-uppercase">&#43;</button>`)
+    $('.products').append(`<div class="col-12 mt-3 d-flex justify-content-between"><button onclick="addProduct()" id="add" type="button" class="add-button btn btn-primary btn-lg text-uppercase">&#43;</button>`
+    + `<span><button onclick="exportProducts()" id="export" type="button" class="btn btn-primary btn-lg text-uppercase mx-3 ">Export</button>`
+    + `<button onclick="downloadProducts()" id="import" type="button" class="btn  btn-primary btn-lg text-uppercase">Download</button></div></span></div>`);
 
 }
+
+function exportProducts() {
+    $.ajax ({
+        url: "/products/export",
+        type: "GET"
+    });
+}
+function downloadProducts() {
+    window.location.replace("http://php.local/import-template.csv");
+}
+

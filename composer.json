@@ -31,7 +31,9 @@
     "intelogie/cryptojs": "dev-master",
     "swiftmailer/swiftmailer": "6.0",
     "datatables.net/datatables.net": "dev-master",
-    "ozdemir/datatables": "^2.3"
+    "ozdemir/datatables": "^2.3",
+    "ext-gd": "*",
+    "phpoffice/phpspreadsheet": "^1.18"
   },
   "autoload": {
     "psr-4": {

@@ -10,6 +10,11 @@ function basePath()
     return __DIR__;
 }
 
+function publicPath()
+{
+    return __DIR__ . '/public';
+}
+
 function dataPath()
 {
     return __DIR__ . '/data';

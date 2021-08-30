@@ -50,6 +50,36 @@ class Validator
 
                 }
             }
+            if($value === 'file')
+            {
+                if (ValidatorRules::fileRequired($this->request[$key]) === false)
+                {
+                    if (isset($this->messages[$key]))
+                        $this->errors[] = $this->messages[$key];
+                    else
+                        $this->errors[] = "File is required";
+
+                }
+                else {
+                    if (ValidatorRules::fileExtension($this->request[$key]) === false)
+                    {
+                        if (isset($this->messages[$key]))
+                            $this->errors[] = $this->messages[$key];
+                        else
+                            $this->errors[] = "The file needs to be csv,xls or xlsx";
+
+                    }
+                    if (ValidatorRules::fileSize($this->request[$key]) === false)
+                    {
+                        if (isset($this->messages[$key]))
+                            $this->errors[] = $this->messages[$key];
+                        else
+                            $this->errors[] = "The file needs to be smaller than 2MB";
+
+                    }
+                }
+
+            }
         }
 
 
@@ -78,6 +108,34 @@ class ValidatorRules {
         if ($data == "" || $data == null) {
             return false;
 
+        }
+        return true;
+    }
+
+    public static function fileRequired($file) {
+
+        if (!file_exists($file)) {
+            return false;
+
+        }
+        return true;
+    }
+
+    public static function fileExtension($file) {
+
+        $extension = pathinfo($file, PATHINFO_EXTENSION);
+        if($extension != "csv" && $extension != "xls" && $extension != "xlsx") {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static function fileSize($file) {
+
+        $size = filesize($file);
+        if ($size > 2097152) {
+            return false;
         }
         return true;
     }

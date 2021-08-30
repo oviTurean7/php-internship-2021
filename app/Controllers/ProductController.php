@@ -6,6 +6,8 @@ use App\Repositories\Products;
 use App\Validators\Validator;
 use Ozdemir\Datatables\Datatables;
 use Ozdemir\Datatables\DB\MySQL;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ProductController extends BaseController implements ResourceControllerInterface
 {
@@ -171,5 +173,51 @@ class ProductController extends BaseController implements ResourceControllerInte
 
         $stmt->execute();
         $stmt->close();
+    }
+
+    public function export() {
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $row = 1;
+        $helper = new Products();
+        $products = $helper->getProducts();
+        foreach ($products as $product) {
+            //var_dump($product);
+            $column = 0;
+            foreach ($product as $columnValue)
+            {
+                //echo $columnValue;
+                $sheet->setCellValueByColumnAndRow($column, $row, $columnValue);
+                $column++;
+            }
+            //$sheet->setCellValue('A1', 'Hello World !');
+            $row++;
+        }
+
+        $writer = new  \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
+
+        $writer->save(publicPath() . "/import-template.csv");
+    }
+
+    public function download($file) {
+        readfile(publicPath() . "/" . $file);
+    }
+
+    public function import() {
+        $path = uploadsPath() . '/' . $_FILES['file']['name'];
+        FileController::add();
+
+        $rules = ['file'];
+        $request[0] = $path;
+        $validator = new Validator($rules, $request, []);
+        if($validator->evaluate() === false)
+        {
+            //echo $path;
+            echo implode (", ", $validator->getErrors());
+            http_response_code(404);
+            return;
+        }
+
     }
 }

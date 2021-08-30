@@ -36,15 +36,18 @@ $router->get('/categories/{id}', 'CategoryController@show');
 $router->put('/categories/{id}', 'CategoryController@update');
 $router->delete('/categories/{id}', 'CategoryController@delete');
 $router->get('/products', 'ProductController@view');
+$router->get('/products/export', 'ProductController@export');
 $router->get('/products/all', 'ProductController@index');
 $router->post('/products', 'ProductController@create');
 $router->get('/products/{id}', 'ProductController@show');
 $router->put('/products/{id}', 'ProductController@update');
 $router->delete('/products/{id}', 'ProductController@delete');
+$router->post('/products/import', 'ProductController@import');
 
 $router->get('/confirm?token={test}', 'ConfirmController@confirm');
 $router->get('/recover?token={test}', 'LoginController@changePasswordView');
 $router->post('/recover?token={test}', 'LoginController@changePassword');
+$router->get('/{file}', 'ProductController@download');
 
 
 
