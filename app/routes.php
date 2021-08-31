@@ -29,6 +29,8 @@ $router->post('/categories/editor', 'CategoryController@editorIndex');
 $router->get('/root-products', 'ProductsResourceController@root');
 $router->get('/products-editor', 'ProductsResourceController@index');
 $router->post('/products-editor/editor', 'ProductsResourceController@editorIndex');
-$router->get('/products-editor/export', 'ProductsResourceController@export');
+$router->get('/products-editor/export', 'ExcelController@export');
+$router->get('/products-editor/import-template', 'ExcelController@importTemplate');
+$router->post('/products-editor/import-data', 'ExcelController@importData');
 
 return $router;

@@ -82,28 +82,4 @@ class ProductsResourceController extends BaseController implements ResourceContr
         $conn = new DBConnection();
         return $conn->deleteData('products', $id);
     }
-
-    public function export()
-    {
-        $conn = new DBConnection();
-        $products = $conn->getData("SELECT id, name, price, description, units, category_id FROM products");
-        $headers = array_keys($products[0]);
-
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-        $sheet->fromArray($headers, NULL, 'A1');
-
-        for ($i = 0; $i < count($products); $i++) {
-            $row = $i + 2;
-            $sheet->fromArray($products[$i], NULL, 'A' . $row);
-        }
-
-//        header('Content-Disposition: attachment;filename="products.csv"');
-//        header("Content-Type: application/octet-stream");
-//        header("Connection: close");
-
-        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
-        $writer->save(basePath() . '/products.csv');
-
-    }
 }

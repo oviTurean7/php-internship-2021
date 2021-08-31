@@ -31,7 +31,7 @@ $(document).ready(function () {
         },
         table: "#categories",
         idSrc: "id",
-        fields: [ {
+        fields: [{
             label: "Name:",
             name: "name"
         }, {
@@ -47,20 +47,20 @@ $(document).ready(function () {
         "ajax": '/categories',
         "select": true,
         "columns": [
-            { "data": "id" },
-            { "data": "name" },
-            { "data": "briefing" },
+            {"data": "id"},
+            {"data": "name"},
+            {"data": "briefing"},
         ],
         buttons: [
-            { extend: "create", editor: editor },
-            { extend: "edit",   editor: editor },
+            {extend: "create", editor: editor},
+            {extend: "edit", editor: editor},
             {
                 extend: "remove",
                 editor: editor,
-                formMessage: function ( e, dt ) {
-                    var rows = dt.rows( e.modifier() ).data().pluck('name');
-                    return 'Are you sure you want to delete the entries for the '+
-                        'following record(s)? <ul><li>'+rows.join('</li><li>')+'</li></ul>';
+                formMessage: function (e, dt) {
+                    var rows = dt.rows(e.modifier()).data().pluck('name');
+                    return 'Are you sure you want to delete the entries for the ' +
+                        'following record(s)? <ul><li>' + rows.join('</li><li>') + '</li></ul>';
                 }
             }
         ]
@@ -70,7 +70,7 @@ $(document).ready(function () {
     $.ajax({
         url: '/categories',
         success: function (data) {
-           categories = JSON.parse(data).data;
+            categories = JSON.parse(data).data;
         }
     })
 
@@ -93,7 +93,7 @@ function initializeProductDTE(categories) {
         },
         table: "#products",
         idSrc: "id",
-        fields: [ {
+        fields: [{
             label: "Name:",
             name: "name"
         }, {
@@ -107,8 +107,8 @@ function initializeProductDTE(categories) {
             name: "units"
         }, {
             label: "Category:",
-            name:  "category_id",
-            type:  "select",
+            name: "category_id",
+            type: "select",
             options: categories
         }
         ]
@@ -120,11 +120,11 @@ function initializeProductDTE(categories) {
         "ajax": '/products-editor',
         "select": true,
         "columns": [
-            { "data": "id" },
-            { "data": "name" },
-            { "data": "price" },
-            { "data": "description" },
-            { "data": "units" },
+            {"data": "id"},
+            {"data": "name"},
+            {"data": "price"},
+            {"data": "description"},
+            {"data": "units"},
             {
                 "data": "category_id",
                 "render": function (val, type, row) {
@@ -135,15 +135,15 @@ function initializeProductDTE(categories) {
 
         ],
         buttons: [
-            { extend: "create", editor: prodEditor },
-            { extend: "edit",   editor: prodEditor },
+            {extend: "create", editor: prodEditor},
+            {extend: "edit", editor: prodEditor},
             {
                 extend: "remove",
                 editor: prodEditor,
-                formMessage: function ( e, dt ) {
-                    var rows = dt.rows( e.modifier() ).data().pluck('name');
-                    return 'Are you sure you want to delete the entries for the '+
-                        'following record(s)? <ul><li>'+rows.join('</li><li>')+'</li></ul>';
+                formMessage: function (e, dt) {
+                    var rows = dt.rows(e.modifier()).data().pluck('name');
+                    return 'Are you sure you want to delete the entries for the ' +
+                        'following record(s)? <ul><li>' + rows.join('</li><li>') + '</li></ul>';
                 }
             },
         ]
@@ -152,6 +152,11 @@ function initializeProductDTE(categories) {
 
 function exportProducts() {
     $.ajax('/products-editor/export');
+}
+
+function importData(event) {
+    console.log(event)
+    console.log($('#formFile'))
 }
 
 function addToCart(product) {
