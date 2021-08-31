@@ -32,5 +32,8 @@ $router->post('/products-editor/editor', 'ProductsResourceController@editorIndex
 $router->get('/products-editor/export', 'ExcelController@export');
 $router->get('/products-editor/import-template', 'ExcelController@importTemplate');
 $router->post('/products-editor/import-data', 'ExcelController@importData');
+$router->get('/orders', 'OrdersResourceController@root');
+$router->get('/orders/index', 'OrdersResourceController@index');
+$router->get('/orders/remove', 'OrdersResourceController@delete');
 
 return $router;

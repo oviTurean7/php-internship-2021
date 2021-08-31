@@ -66,6 +66,8 @@ $(document).ready(function () {
         ]
     });
 
+    initializeOrderDTE()
+
     let categories = []
     $.ajax({
         url: '/categories',
@@ -78,6 +80,7 @@ $(document).ready(function () {
         const options = categories.map(c => ({label: c.name, value: c.id}))
         initializeProductDTE(options)
     }, 100)
+
 });
 
 function initializeProductDTE(categories) {
@@ -148,6 +151,80 @@ function initializeProductDTE(categories) {
             },
         ]
     });
+}
+
+function initializeOrderDTE() {
+    let editor = new $.fn.dataTable.Editor({
+        ajax: {
+            url: '/orders/remove',
+            success: function (data) {
+                console.log('SUCCESS')
+            },
+            error: function (data) {
+                window.location.reload()
+            }
+        },
+        table: "#orders",
+        idSrc: "id",
+    });
+
+    const table = $('#orders').DataTable({
+        "dom": 'Bfrtip',
+        "serverSide": false,
+        "ajax": '/orders/index',
+        "select": true,
+        "columns": [
+            // {
+            //     "className":      'items',
+            //     "orderable":      false,
+            //     "data":           "items",
+            //     "defaultContent": ''
+            // },
+            {
+                "data": "id",
+                "className": "order-id"
+            },
+            {"data": "date"},
+            {"data": "total_price"},
+        ],
+        buttons: [
+            'pdfHtml5',
+            {
+                extend: "remove",
+                editor: editor,
+                formMessage: function (e, dt) {
+                    var rows = dt.rows(e.modifier()).data().pluck('id');
+                    return 'Are you sure you want to delete the entries for the ' +
+                        'following record(s)? <ul><li>' + rows.join('</li><li>') + '</li></ul>';
+                }
+            },
+        ]
+    });
+
+    itemsTable = initializeOrderItemDTE([]);
+    table.on( 'select', function () {
+        itemsTable.destroy()
+        var rowData = table.rows( { selected: true } ).data()[0];
+        console.log(rowData.items)
+        itemsTable = initializeOrderItemDTE(rowData.items)
+    } );
+}
+
+function initializeOrderItemDTE(data) {
+    const table = $('#order_items').DataTable({
+        "dom": 'Bfrtip',
+        "serverSide": false,
+        "data": data,
+        "select": true,
+        "columns": [
+            {"data": "id"},
+            {"data": "product_id"},
+            {"data": "units_num"},
+            {"data": "price"},
+            {"data": "order_id"},
+        ],
+    })
+    return table;
 }
 
 function exportProducts() {
