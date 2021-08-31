@@ -26,5 +26,8 @@ $router->get('/confirm', 'AccountController@confirmMail');
 $router->get('/root-categories', 'CategoryController@root');
 $router->get('/categories', 'CategoryController@index');
 $router->post('/categories/editor', 'CategoryController@editorIndex');
+$router->get('/root-products', 'ProductsResourceController@root');
+$router->get('/products-editor', 'ProductsResourceController@index');
+$router->post('/products-editor/editor', 'ProductsResourceController@editorIndex');
 
 return $router;

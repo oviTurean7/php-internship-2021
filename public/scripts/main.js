@@ -20,7 +20,15 @@ $(document).ready(function () {
     }
 
     let editor = new $.fn.dataTable.Editor({
-        ajax: '/categories/editor',
+        ajax: {
+            url: '/categories/editor',
+            success: function (data) {
+                console.log('SUCCESS')
+            },
+            error: function (data) {
+                window.location.reload()
+            }
+        },
         table: "#categories",
         idSrc: "id",
         fields: [ {
@@ -58,14 +66,91 @@ $(document).ready(function () {
         ]
     });
 
-    // $('#categories').on( 'click', 'tbody tr', function () {
-    //     editor.edit(this, {
-    //         title: 'Edit record',
-    //         buttons: 'Update',
-    //         submit: 'allIfChanged'
-    //     });
-    // })
+    let categories = []
+    $.ajax({
+        url: '/categories',
+        success: function (data) {
+           categories = JSON.parse(data).data;
+           console.log(categories)
+        }
+    })
+
+    setTimeout(() => {
+        const options = categories.map(c => ({label: c.name, value: c.id}))
+        console.log(options)
+        initializeProductDTE(options)
+    }, 100)
 });
+
+function initializeProductDTE(categories) {
+    let prodEditor = new $.fn.dataTable.Editor({
+        ajax: {
+            url: '/products-editor/editor',
+            success: function (data) {
+                console.log('SUCCESS')
+            },
+            error: function (data) {
+                window.location.reload()
+            }
+        },
+        table: "#products",
+        idSrc: "id",
+        fields: [ {
+            label: "Name:",
+            name: "name"
+        }, {
+            label: "Price:",
+            name: "price"
+        }, {
+            label: "Description:",
+            name: "description"
+        }, {
+            label: "Units::",
+            name: "units"
+        }, {
+            label: "Category:",
+            name:  "category_id",
+            type:  "select",
+            options: categories
+        }
+        ]
+    });
+
+    $('#products').DataTable({
+        "dom": 'Bfrtip',
+        "serverSide": false,
+        "ajax": '/products-editor',
+        "select": true,
+        "columns": [
+            { "data": "id" },
+            { "data": "name" },
+            { "data": "price" },
+            { "data": "description" },
+            { "data": "units" },
+            {
+                "data": "category_id",
+                "render": function (val, type, row) {
+                    const cat = categories.find(c => c.value == val)
+                    return cat.label
+                }
+            },
+
+        ],
+        buttons: [
+            { extend: "create", editor: prodEditor },
+            { extend: "edit",   editor: prodEditor },
+            {
+                extend: "remove",
+                editor: prodEditor,
+                formMessage: function ( e, dt ) {
+                    var rows = dt.rows( e.modifier() ).data().pluck('name');
+                    return 'Are you sure you want to delete the entries for the '+
+                        'following record(s)? <ul><li>'+rows.join('</li><li>')+'</li></ul>';
+                }
+            }
+        ]
+    });
+}
 
 function addToCart(product) {
     console.log('ADD IN CART')

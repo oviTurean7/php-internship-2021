@@ -52,7 +52,9 @@ class DBConnection
 
     public function deleteData($table, $id)
     {
-        $this->connection->query("DELETE FROM '$table' WHERE `id`=$id");
+        $this->connection->query("SET FOREIGN_KEY_CHECKS=0;");
+        $this->connection->query("DELETE FROM `$table` WHERE `id`=$id");
+        $this->connection->query("SET FOREIGN_KEY_CHECKS=1;");
     }
 
     /**
