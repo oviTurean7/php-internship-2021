@@ -156,6 +156,7 @@ $("#fileForm").submit(function (event) {
             success: function(data){
                 console.log("success " + data);
                 $('#submitSuccessMessage').removeClass('d-none');
+                //window.location.reload();
             },
             error: function (message) {
                 console.log(message);

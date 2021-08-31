@@ -10,7 +10,7 @@ abstract class Polygon extends Shape
         $this->dimensions = $array;
     }
 
-    public abstract function calculateArea();
+    abstract public function calculateArea();
 
     public function calculateLength()
     {

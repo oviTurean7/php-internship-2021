@@ -6,6 +6,7 @@ use App\Repositories\Products;
 use App\Validators\Validator;
 use Ozdemir\Datatables\Datatables;
 use Ozdemir\Datatables\DB\MySQL;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -94,8 +95,8 @@ class ProductController extends BaseController implements ResourceControllerInte
         $sql = "SELECT id FROM `categories`";
         $result = $conn->query($sql);
         $categories = $result->fetch_all(MYSQLI_NUM);;
-        var_dump($categories);
-        var_dump($_POST['categoryId']);
+        //var_dump($categories);
+        //var_dump($_POST['categoryId']);
         if (!in_array(array(strval($_POST['categoryId'])), $categories))
         {
             echo "The category does not exist";
@@ -148,6 +149,18 @@ class ProductController extends BaseController implements ResourceControllerInte
             return;
         }
         global $conn;
+        //global $categories;
+        $sql = "SELECT id FROM `categories`";
+        $result = $conn->query($sql);
+        $categories = $result->fetch_all(MYSQLI_NUM);;
+        //var_dump($categories);
+        //var_dump($_POST['categoryId']);
+        if (!in_array(array(strval($_POST['categoryId'])), $categories))
+        {
+            echo "The category does not exist";
+            http_response_code(404);
+            return;
+        }
 
         $name = $_PUT['name'];
         $units = $_PUT['units'];
@@ -217,6 +230,19 @@ class ProductController extends BaseController implements ResourceControllerInte
             echo implode (", ", $validator->getErrors());
             http_response_code(404);
             return;
+        }
+
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+        if ($extension == "xls" || $extension == "xlsx") {
+            $reader = IOFactory::createReaderForFile($path);
+            $reader->setReadDataOnly(true);
+            $spreadsheet = $reader->load($path);
+            Products::addProductsToDatabase($spreadsheet->getActiveSheet()->toArray());
+        }
+        else {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+            $spreadsheet = $reader->load($path);
+            Products::addProductsToDatabase($spreadsheet->getActiveSheet()->toArray());
         }
 
     }

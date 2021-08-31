@@ -174,9 +174,10 @@ function addProduct() {
                     processData: false,
                     data: formData,
                     success: function(data){
-                        console.log("success " + data);
-                        $('#submitSuccessMessageInput').removeClass('d-none');
-                        $('#submitErrorMessageInput').add('d-none');
+                        //console.log("success " + data);
+                        //$('#submitSuccessMessageInput').removeClass('d-none');
+                        //$('#submitErrorMessageInput').add('d-none');
+                        window.location.reload();
                     },
                     error: function (message) {
                         console.log(message.responseText);

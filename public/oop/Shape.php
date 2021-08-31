@@ -37,9 +37,9 @@ abstract class Shape
 
 
 
-    public abstract function calculateArea();
+    abstract public function calculateArea();
 
-    public abstract function calculateLength();
+    abstract public function calculateLength();
 
 
 

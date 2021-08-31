@@ -13,25 +13,40 @@ $products = $result->fetch_all(MYSQLI_ASSOC);
 class Products
 {
 
-    static public function addProductsToDatabase () {
+    public static function addProductsToDatabase ($productsToAdd) {
         global $conn;
-        global $products;
-        foreach($products as $product) {
-            //var_dump($product);
-            $stmt = $conn->prepare("INSERT  INTO products(name, units, price, description, url) VALUES (?, ?, ?, ?, ?)");
 
-            $stmt->bind_param("sidss", $name, $units, $price, $description, $url);
-            $name = $product['name'];
-            $units = $product['units'];
-            $price =  $product['price'];
-            $description =  $product['description'];
-            $url = $product['url'];
+        foreach($productsToAdd as $product) {
+            //var_dump($product);
+            //var_dump($product);
+            //global $conn;
+            //global $categories;
+            $sql = "SELECT id FROM `categories`";
+            $result = $conn->query($sql);
+            $categories = $result->fetch_all(MYSQLI_NUM);;
+            //var_dump($categories);
+            //var_dump($_POST['categoryId']);
+            if (!in_array(array(strval($product[5])), $categories))
+            {
+                echo "The category does not exist";
+                http_response_code(404);
+                return;
+            }
+            $stmt = $conn->prepare("INSERT  INTO products(name, units, price, description, url, category_id) VALUES (?, ?, ?, ?, ?, ?)");
+
+            $stmt->bind_param("sidssi", $name, $units, $price, $description, $url, $categoryId);
+            $name = $product[0];
+            $units = $product[1];
+            $price =  $product[2];
+            $description =  $product[3];
+            $url = $product[4];
+            $categoryId = $product[5];
             $stmt->execute();
             $stmt->close();
         }
     }
 
-    static public function getProductById($productId) {
+    public static function getProductById($productId) {
 
 
         //var_dump( $products);
