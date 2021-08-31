@@ -71,13 +71,11 @@ $(document).ready(function () {
         url: '/categories',
         success: function (data) {
            categories = JSON.parse(data).data;
-           console.log(categories)
         }
     })
 
     setTimeout(() => {
         const options = categories.map(c => ({label: c.name, value: c.id}))
-        console.log(options)
         initializeProductDTE(options)
     }, 100)
 });
@@ -147,9 +145,13 @@ function initializeProductDTE(categories) {
                     return 'Are you sure you want to delete the entries for the '+
                         'following record(s)? <ul><li>'+rows.join('</li><li>')+'</li></ul>';
                 }
-            }
+            },
         ]
     });
+}
+
+function exportProducts() {
+    $.ajax('/products-editor/export');
 }
 
 function addToCart(product) {

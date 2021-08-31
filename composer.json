@@ -28,7 +28,8 @@
     "jenssegers/blade": "^1.2",
     "swiftmailer/swiftmailer": "^6.2",
     "ozdemir/datatables": "^2.3",
-    "datatables.net/editor-php": "2.*"
+    "datatables.net/editor-php": "2.*",
+    "phpoffice/phpspreadsheet": "^1.18"
   },
   "autoload": {
     "psr-4": {

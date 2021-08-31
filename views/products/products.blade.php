@@ -1,7 +1,7 @@
 @extends('layout.main')
 
 @section('content')
-
+    <button onclick="exportProducts()">Export</button>
     <table id="products" class="display">
         <thead>
             <tr>

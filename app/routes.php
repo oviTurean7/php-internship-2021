@@ -29,5 +29,6 @@ $router->post('/categories/editor', 'CategoryController@editorIndex');
 $router->get('/root-products', 'ProductsResourceController@root');
 $router->get('/products-editor', 'ProductsResourceController@index');
 $router->post('/products-editor/editor', 'ProductsResourceController@editorIndex');
+$router->get('/products-editor/export', 'ProductsResourceController@export');
 
 return $router;
