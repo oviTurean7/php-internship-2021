@@ -2,13 +2,14 @@
 
 namespace App\Controllers;
 
+use Swift_Attachment;
 use Swift_Mailer;
 use Swift_Message;
 use Swift_SmtpTransport;
 
 class EmailController extends BaseController
 {
-    public static function base($recipient, $title, $body) {
+    public static function base($recipient, $title, $body, $attachment = null) {
         $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl'))
             ->setUsername('phpproject50@gmail.com')
             ->setPassword('projectPhpLocal123!');
@@ -19,6 +20,10 @@ class EmailController extends BaseController
             ->setTo([$recipient])
             ->setBody($body);
 // Send the message
+        if ($attachment != null)
+        {
+            $message->attach(Swift_Attachment::fromPath($attachment));
+        }
         $result = $mailer->send($message);
     }
 
@@ -27,8 +32,8 @@ class EmailController extends BaseController
         EmailController::base($recepient, 'Confirm your account', 'Confirm your account: ' . $link);
     }
 
-    public static function order($recepient, $orderId, $totalPrice, $noOfItems) {
-        EmailController::base($recepient, "Order number $orderId placed successfully", "Your order number $orderId was placed successfully. You have $noOfItems items and a total of $totalPrice");
+    public static function order($recepient, $orderId, $totalPrice, $noOfItems, $attachment) {
+        EmailController::base($recepient, "Order number $orderId placed successfully", "Your order number $orderId was placed successfully. You have $noOfItems items and a total of $totalPrice", $attachment);
     }
 
     public static function orderCancelled($recepient, $productNames) {

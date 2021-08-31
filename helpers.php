@@ -40,6 +40,10 @@ function databasePath()
     return __DIR__ . '/public/database';
 }
 
+function stylePath(){
+    return __DIR__ . '/public/styles';
+}
+
 function styleUrl($filename)
 {
     global $config;

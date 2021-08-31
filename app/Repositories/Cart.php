@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Controllers\EmailController;
 use App\Controllers\FileController;
+use App\Controllers\OrderController;
 use Illuminate\Support\Facades\Date;
 
 class Cart implements \App\Cart\Cart
@@ -75,10 +76,10 @@ class Cart implements \App\Cart\Cart
 
         $order_id = $conn->insert_id;
 
-        var_dump($_SESSION['cart']->getCart());
+        //var_dump($_SESSION['cart']->getCart());
         $items = false;
         foreach (array_keys($this->addedToCart) as $key) {
-            echo "helllooooooooooo";
+           // echo "helllooooooooooo";
             $stmt = $conn->prepare("INSERT  INTO order_items(product_id, order_id, number_of_units, price) VALUES (?, ?, ?, ?)");
 
             $stmt->bind_param("iiii", $product_id, $order_id, $number_of_units, $price);
@@ -86,24 +87,26 @@ class Cart implements \App\Cart\Cart
 
             $number_of_units = intval($this->addedToCart[$key]);
             $price = intval($number_of_units) * $this->getProductPrice($product_id) ;
-            var_dump($product_id);
-            var_dump($number_of_units);
-            var_dump($price);
+            //var_dump($product_id);
+            //var_dump($number_of_units);
+            //var_dump($price);
             $success = $stmt->execute();
             $items = true;
             $stmt->close();
         }
-
+        $order = new OrderController();
+        $order->pdf($order_id);
+        //$order->download($order_id);
         $data['noOfItems'] = $this->getNumberOfItems();
         $data['totalPrice'] = $total_price;
         $data['date'] = date(' h:iA l jS \of F Y');
         FileController::append($data);
-        echo "try me" . $_SESSION['email'] . "<br>";
+        //echo "try me" . $_SESSION['email'] . "<br>";
         if (!empty($_SESSION['logged']) && !empty($_SESSION['email']) && $success && $items) {
-            echo "I am doing email";
-            EmailController::order($_SESSION['email'], $order_id, $total_price, $this->getNumberOfItems());
+            echo $order_id;
+            EmailController::order($_SESSION['email'], $order_id, $total_price, $this->getNumberOfItems(), "http://php.local/order_$order_id.pdf");
         }
-
+        //header("Location: http://php.local/orders/$order_id/pdf");
     }
 
     public function empty() {

@@ -95,11 +95,12 @@ class CartController extends BaseController
             http_response_code(404);
             return;
         }
-        $file_path = uploadsPath() . '/' . $_FILES['file']['name'];
-        var_dump( $file_path);
+        $file_path = "http://php.local/uploads" . '/' . $_FILES['file']['name'];
+        //var_dump( $file_path);
         FileController::add();
         //var_dump($_POST);
-        $_SESSION['cart']->placeOrder($_POST, $file_path);
+        echo $_SESSION['cart']->placeOrder($_POST, $file_path);
+
     }
 
 }

@@ -128,9 +128,11 @@ function placeOrder (formData) {
         data: formData,
         success: function(data){
 
-            console.log(data);
-            emptyCart();
-            window.location.replace("http://php.local/");
+            console.log("order data" + data);
+           // alert(data);
+           // downloadOrderPdf(data);
+            emptyCart(data);
+           // window.location.replace("http://php.local/");
         },
         error: function(msg) {
             console.log("eor");
@@ -141,16 +143,16 @@ function placeOrder (formData) {
     });
 }
 
-
-function emptyCart () {
+function downloadOrderPdf (id) {
     $.ajax({
-        url: "/cart",
-        type: "DELETE",
+        url: "/orders/" + id + "/pdf",
+        type: "GET",
 
         success: function(data){
 
-            console.log("emptyy");
-            window.location.replace("http://php.local/");
+            //console.log("emptyy");
+            emptyCart();
+            //window.location.replace("http://php.local/");
         },
         error: function(msg) {
             console.log("error");
@@ -158,4 +160,24 @@ function emptyCart () {
         }
     });
 }
+
+
+function emptyCart (id) {
+    $.ajax({
+        url: "/cart",
+        type: "DELETE",
+
+        success: function(data){
+
+            console.log("emptyy");
+
+            window.location.replace("http://php.local/orders/" + id + "/pdf");
+        },
+        error: function(msg) {
+            console.log("error");
+            console.log(msg);
+        }
+    });
+}
+
 

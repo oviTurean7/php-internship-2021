@@ -44,6 +44,14 @@ $router->put('/products/{id}', 'ProductController@update');
 $router->delete('/products/{id}', 'ProductController@delete');
 $router->post('/products/import', 'ProductController@import');
 
+$router->get('/orders', 'OrderController@view');
+$router->get('/orders/all', 'OrderController@index');
+$router->get('/orders/{id}', 'OrderController@show');
+$router->get('/orders/{id}/items', 'OrderController@getItems');
+$router->delete('/orders/{id}', 'OrderController@delete');
+$router->get('/orders/{id}/pdf', 'OrderController@download');
+
+
 $router->get('/confirm?token={test}', 'ConfirmController@confirm');
 $router->get('/recover?token={test}', 'LoginController@changePasswordView');
 $router->post('/recover?token={test}', 'LoginController@changePassword');
