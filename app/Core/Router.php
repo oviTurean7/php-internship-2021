@@ -30,9 +30,7 @@ class Router
     public function getRouteAction($uri, $method)
     {
         //the passed method is with uppercase GET and we define routes with lowercase
-        $route = $this->findMatchingRoute($uri, strtolower($method));
-
-        return $route;
+        return $this->findMatchingRoute($uri, strtolower($method));
     }
 
     public function filter($filterName)
@@ -83,7 +81,7 @@ class Router
         die();
     }
 
-    protected function checkRouteMatch($path, $method, $route)
+    protected function checkRouteMatch($path, $method, $route): bool
     {
         if ($method !== $route['method']) {
             return false;

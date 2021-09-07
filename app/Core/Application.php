@@ -36,7 +36,7 @@ class Application
         $uri = $request->getServerParams()['REQUEST_URI'];
         $method = $request->getServerParams()['REQUEST_METHOD'];
 
-        $hiddenMethod = isset($request->getParameters()['_method']) ? $request->getParameters()['_method'] : null;
+        $hiddenMethod = $request->getParameters()['_method'] ?? null;
 
         if ($hiddenMethod && strtolower($method) === 'post') {
             $method = $hiddenMethod;

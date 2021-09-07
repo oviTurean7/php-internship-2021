@@ -7,12 +7,13 @@ $(document).ready(function () {
         let productId = this.parentNode.parentNode.firstElementChild.value;
         $.ajax({
             url: '/add-product.php',
+            dataType: 'json',
             method: 'GET',
             data: {
                 pId: productId,
             },
             success: function () {
-                console.log('done');
+                window.location.reload();
             }
         });
     });
@@ -21,27 +22,64 @@ $(document).ready(function () {
         let column = this.id;
         $.ajax({
             url: '/index.php',
-            method: 'GET',
+            method: 'POST',
             data: {
                 sort: column,
             },
             success: function () {
-                console.log(column);
+                console.log('yes');
             }
         });
     });
 
-    $('.add-button').on('click',function (cnt, id) {
-        cnt = this.parentNode.parentNode.children[4].innerText;
+    $('.add-button').on('click', function () {
+        let id = this.parentNode.parentNode.firstElementChild.value;
         $.ajax({
-            url: '/cart.php/' + id,
-            method: 'POST',
-            data: {
-                productCount: parseInt(cnt)+1,
+            url : "/cart.php",
+            method: 'GET',
+            data : {
+                addId : id,
             },
-            success: function () {
-                window.location.reload();
+            success : function() {
+                alert('success');
             }
         });
     });
+    $('.dec-button').on('click', function () {
+        let id = this.parentNode.parentNode.firstElementChild.value;
+        $.ajax({
+            url : "/cart.php",
+            method: 'GET',
+            data : {
+                decId : id,
+            },
+            success : function() {
+                window.location.reload();
+                alert('success');
+            }
+        });
+    });
+
+    $('.remove-button').on('click', function () {
+        let id = this.parentNode.parentNode.firstElementChild.value;
+        $.ajax({
+            url : "/delete-cart-item",
+            method: 'POST',
+            data : {
+                delId : id,
+            },
+            success : function() {
+                window.location.reload();
+                alert('success');
+            }
+        });
+    });
+
+    $('.order-button').on('click', function ($data) {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    });
+
 });

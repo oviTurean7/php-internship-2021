@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'url' => 'http://internship.local' //TODO - add your url here
+    'url' => 'http://internship.local',
+    'database' => [ 'user' => 'root', 'password' => '', 'name' => 'ecommerce']
 ];

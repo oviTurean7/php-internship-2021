@@ -24,8 +24,12 @@
   ],
   "license" : "MIT",
   "require": {
-    "php": ">=7.0",
-    "jenssegers/blade": "^1.2"
+    "php": ">=7.4",
+    "jenssegers/blade": "^1.2",
+    "ext-mysqli": "*",
+    "ext-pdo": "*",
+    "ext-oauth": "*",
+    "ext-json": "*"
   },
   "autoload": {
     "psr-4": {
@@ -36,5 +40,6 @@
     ]
   },
   "minimum-stability": "dev",
-  "prefer-stable": true
+  "prefer-stable": true,
+  "namespace": "Session/Session"
 }
